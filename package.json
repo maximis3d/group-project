@@ -8,8 +8,12 @@
   },
   "keywords": [],
   "author": "",
+<<<<<<< HEAD
   "license": "ISC",
   "dependencies": {
     "mongodb": "4.1"
   }
+=======
+  "license": "ISC"
+>>>>>>> 13b0fc58087953b7ac7152bc083dd02610b18982
 }
