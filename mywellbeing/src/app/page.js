@@ -1,6 +1,8 @@
 "use client"
 
+import Image from 'next/image';
 import { Button } from "@chakra-ui/react"
+import Link from 'next/link';
 
 
 
@@ -16,17 +18,28 @@ import {
 
 export default function Home() {
   return (
-    <div>
-    <h1>Hello world</h1>
-    <Button>Button</Button>
+    <div className="bodyContainer">
+    
+    <Image
+          src="/logo.png"
+          alt="MyWellBeing Logo"
+          width={50}
+          height={50}
+          style={{ marginRight: '8px' }}
+        />
 
-    <ProgressRoot defaultValue={40} maxW="sm">
-      <HStack gap="5">
-        <ProgressLabel>Usage</ProgressLabel>
-        <ProgressBar flex="1" />
-        <ProgressValueText>40%</ProgressValueText>
-      </HStack>
-    </ProgressRoot>
+    <h1>MyWellBeing</h1>
+
+
+    <div className="navButtons flex space-x-4">
+        <button className="mealsButton">Meals</button>
+        <button className="healthButton">Health</button>
+      </div>
+
+      <Link href="/mealPlannerPage">
+        <button>Meal Planner page</button>
+      </Link>
+
 
     </div>
   )
