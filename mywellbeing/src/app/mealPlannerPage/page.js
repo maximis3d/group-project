@@ -74,6 +74,8 @@ function Home() {
         </Link>
       </HStack>
         
+      <div style={{ width: "400px", height: "2px", backgroundColor: "teal", margin: "3px 0" }} />
+
 
       <Tabs.Root defaultValue="Bulking" size="lg">
       <Tabs.List>
