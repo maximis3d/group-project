@@ -12,7 +12,7 @@ export default function loginLoadingPage() {
     // Set a timer to navigate after 3 seconds (3000 milliseconds)
     const timer = setTimeout(() => {
       router.push('/homePage');
-    }, 4000);
+    }, 500);
 
     // Cleanup the timer if the component unmounts
     return () => clearTimeout(timer);
