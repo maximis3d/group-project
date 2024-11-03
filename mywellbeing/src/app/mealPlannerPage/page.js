@@ -1,7 +1,7 @@
 "use client"
 
 
-import { Stack } from "@chakra-ui/react"
+import { Stack, HStack, Link,} from "@chakra-ui/react"
 
 import { Center } from "@chakra-ui/react";
 
@@ -12,13 +12,11 @@ import { Heading } from "@chakra-ui/react"
 import { List } from "@chakra-ui/react"
 
 import { Tabs } from "@chakra-ui/react"
-import { LuCheckSquare, LuFolder, LuUser } from "react-icons/lu"
 import { GiHotMeal } from "react-icons/gi";
 
 
-import { SegmentedControl } from "@/components/ui/segmented-control"
-import { useState } from "react"
 
+import { SegmentedControl } from "@/components/ui/segmented-control"
 
 import {
   PaginationItems,
@@ -44,32 +42,51 @@ import { Icon } from "@chakra-ui/react"
 import { VscAdd  } from "react-icons/vsc"
 import { GiBiceps } from "react-icons/gi";
 import { IoBody } from "react-icons/io5";
-import { IoMdArrowBack } from "react-icons/io";
+import { IconButton } from "@chakra-ui/react"
+
+
 
 
 function Home() {
-  const handleClick = () => {
-    console.log("hello");
-  };
+
 
   return (
     <div>
       <Center>
+
+      
+
       <Stack gap = "4">
-      <IoMdArrowBack  size="50px"/>
+
+        {/*****************************************Start of header*****************************************/}
+      <HStack spacing={4} className="headerContainer" align="center">
+        <Link href="/homePage" mt="10px" color="teal">
+          <p style={{ fontSize: '20px', padding: '0 15px' }}>Home</p>
+        </Link>
+        <Link href="/mealPlannerPage" mt="10px" color="teal">
+          <p style={{ fontSize: '20px', padding: '0 15px' }}>Meals</p>
+        </Link>
+        <Link href="/healthPage" mt="10px" color="teal">
+          <p style={{ fontSize: '20px', padding: '0 15px' }}>Health</p>
+        </Link>
+        <Link href="/accountPage" mt="10px" color="teal">
+          <p style={{ fontSize: '20px', padding: '0 15px' }}>Account</p>
+        </Link>
+      </HStack>
+        
 
       <Tabs.Root defaultValue="Bulking" size="lg">
       <Tabs.List>
         <Tabs.Trigger value="Bulking">
-        <GiBiceps />
+        <GiBiceps color="teal" />
           Bulking
         </Tabs.Trigger>
         <Tabs.Trigger value="Cutting">
-        <IoBody />
+        <IoBody color="teal" />
         Cutting
         </Tabs.Trigger>
         <Tabs.Trigger value="General">
-        <GiHotMeal />
+        <GiHotMeal color="teal" />
           General
         </Tabs.Trigger>
       </Tabs.List>
@@ -169,9 +186,17 @@ A creamy blend of rolled oats, protein powder, Greek yogurt, and fresh fruits li
       </DialogContent>
     </DialogRoot>
 
+
     <Icon fontSize="2xl" color="pink.700">
-    <VscAdd />
+      <IconButton variant="ghost" _hover={{ boxShadow: 'none', bg: 'transparent' }}   
+      
+       
+      >
+      <VscAdd />
+       
+      </IconButton>
   </Icon>
+
       </Card.Footer>
     </Card.Root>
     
