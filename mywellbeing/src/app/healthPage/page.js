@@ -1,23 +1,24 @@
 "use client"
 
-import { Link, Text, Button, HStack, Stack } from "@chakra-ui/react";
-import Image from 'next/image';
+import { Link, Text, Button, HStack, Stack, Image } from "@chakra-ui/react";
 import { Field } from "@/components/ui/field";
 import { Input } from "@chakra-ui/react";
 import React, { PureComponent } from 'react';
-import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Slider } from "@/components/ui/slider"
 
 
-export default function healthPage() {
+export default function healthPage ()  {
   const data = [
-    { x: 100, y: 200, z: 200 },
-    { x: 120, y: 100, z: 260 },
-    { x: 170, y: 300, z: 400 },
-    { x: 140, y: 250, z: 280 },
-    { x: 150, y: 400, z: 500 },
-    { x: 110, y: 280, z: 200 },
+    { name: 'Monday', uv: 4},
+    { name: 'Tuesday', uv: 3},
+    { name: 'Wednesday', uv: 2},
+    { name: 'Thursday', uv: 2 },
+    { name: 'Friday', uv: 3 },
+    { name: 'Saturday', uv: 1 },
+    { name: 'Sunday', uv: 4},
   ];
-
+  
   return (
     <Stack 
       spacing={4} 
@@ -62,28 +63,38 @@ export default function healthPage() {
         textAlign: "center",      // Ensures text aligns to the right
         marginTop: "40px"
       }}>
-        <h1 style={{ fontWeight: "bold", fontSize:"24px" }}>Health page under construction. Coming 2025 ٩(^ᗜ^ )و </h1>
-
-
       
-      </div>
 
-      <ResponsiveContainer width="100%" height={400}>
-        <ScatterChart
+
+
+        <LineChart
+          width={300}
+          height={300}
+          data={data}
           margin={{
-            top: 20,
-            right: 20,
-            bottom: 20,
-            left: 20,
+            top: 5,
+            right: 5,
+            left: 5,
+            bottom: 5,
           }}
         >
-          <CartesianGrid />
-          <XAxis type="number" dataKey="x" name="stature" unit="cm" />
-          <YAxis type="number" dataKey="y" name="weight" unit="kg" />
-          <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-          <Scatter name="A school" data={data} fill="#8884d8" />
-        </ScatterChart>
-      </ResponsiveContainer>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
+          <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+        </LineChart>
+
+        <Image 
+        height="200px"
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Smiley.svg/330px-Smiley.svg.png" />
+
+        <Slider width="100px" defaultValue={[40]} /> <Button>Submit</Button>
+      </div>
+
+   
         
       {/*****************************************End of main body section*****************************************/}
     </Stack>
