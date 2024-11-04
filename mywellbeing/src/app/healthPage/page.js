@@ -28,28 +28,25 @@ export default function healthPage ()  {
     >
       {/*****************************************Start of header*****************************************/}
       <HStack spacing={4} className="headerContainer" align="center">
-
-
         <Link href="/homePage" mt="10px" color="teal">
-          <p style={{ fontSize: '20px', padding: '0 15px' }}>Home</p>
+          <p style={{ fontSize: '18px', padding: '0 8px' }}>Home</p>
         </Link>
-
-
         <Link href="/mealPlannerPage" mt="10px" color="teal">
-          <p style={{ fontSize: '20px', padding: '0 15px' }}>Meals</p>
+          <p style={{ fontSize: '18px', padding: '0 8px' }}>Meals</p>
         </Link>
-
         <Link href="/healthPage" mt="10px" color="teal">
-          <p style={{ fontSize: '20px', padding: '0 15px'}}>Health</p>
+          <p style={{ fontSize: '18px', padding: '0 8px' }}>Health</p>
         </Link>
-
+        <Link href="/goalsPage" mt="10px" color="teal">
+          <p style={{ fontSize: '18px', padding: '0 8px' }}>Goals</p>
+        </Link>
         <Link href="/accountPage" mt="10px" color="teal">
-          <p style={{ fontSize: '20px', padding: '0 15px'}}>Account</p>
+          <p style={{ fontSize: '18px', padding: '0 8px' }}>Account</p>
         </Link>
       </HStack>
 
       {/* Custom divider */}
-      <div style={{ width: "400px", height: "2px", backgroundColor: "teal", margin: "16px 0" }} />
+      <div style={{ width: "360px", height: "2px", backgroundColor: "teal", margin: "16px 0" }} />
       {/*****************************************End of header section*****************************************/}
   
       {/*****************************************Start of main body section*****************************************/}

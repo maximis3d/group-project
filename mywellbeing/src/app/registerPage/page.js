@@ -35,7 +35,7 @@ export default function registerPage() {
         marginTop: "40px"
       }}>
 
-        <h1 style={{ fontWeight: "bold", fontSize: "24px", width: "100%" }}>Register</h1> 
+        <h1 style={{ fontWeight: "bold", fontSize: "24px", width: "100%" }}>Sign up now</h1> 
 
         <Flex className="inputContainer" gap="4" mt="20px"> 
           <Field label="First name" color="grey">
@@ -46,6 +46,15 @@ export default function registerPage() {
             <Input placeholder="Last name" size="md" width="140px" />
           </Field>
         </Flex>
+
+        <Field label="Phone number" color="grey" mt="20px"> 
+          <Input placeholder="Enter your phone number" size="md" />
+        </Field>
+
+        <Field label="Date of birth" color="grey" mt="20px"> 
+          <Input placeholder="Enter your date of birth" size="md" />
+        </Field>
+
 
         <Field label="Email" color="grey" mt="20px"> 
           <Input placeholder="Enter your email" size="md" />
