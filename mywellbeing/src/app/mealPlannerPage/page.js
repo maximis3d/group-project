@@ -1,4 +1,4 @@
-"use client"
+
 
 
 import { Stack, HStack, Link,} from "@chakra-ui/react"

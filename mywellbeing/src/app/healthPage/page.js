@@ -1,9 +1,8 @@
 "use client"
 
+
 import { Link, Text, Button, HStack, Stack, Image } from "@chakra-ui/react";
-import { Field } from "@/components/ui/field";
-import { Input } from "@chakra-ui/react";
-import React, { PureComponent } from 'react';
+
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, } from 'recharts';
 
 import { Slider } from "@/components/ui/slider"
@@ -22,7 +21,6 @@ export default function healthPage ()  {
 
 
 
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
   
   return (
