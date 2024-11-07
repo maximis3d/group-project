@@ -4,7 +4,8 @@ import { Link, Text, Button, HStack, Stack, Image } from "@chakra-ui/react";
 import { Field } from "@/components/ui/field";
 import { Input } from "@chakra-ui/react";
 import React, { PureComponent } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, } from 'recharts';
+
 import { Slider } from "@/components/ui/slider"
 
 
@@ -18,6 +19,11 @@ export default function healthPage ()  {
     { name: 'Saturday', uv: 1 },
     { name: 'Sunday', uv: 4},
   ];
+
+
+
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+
   
   return (
     <Stack 
@@ -89,6 +95,11 @@ export default function healthPage ()  {
         src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Smiley.svg/330px-Smiley.svg.png" />
 
         <Slider width="100px" defaultValue={[40]} /> <Button>Submit</Button>
+
+
+
+        
+
       </div>
 
    
