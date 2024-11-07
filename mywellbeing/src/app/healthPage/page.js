@@ -1,35 +1,10 @@
-"use client"
+import { Link, Button, HStack, Stack, Image } from "@chakra-ui/react";
+import { Slider } from "@/components/ui/slider";
+import LineChartComponent from "./linechart";  // Import the chart component
 
-
-import { Link, Text, Button, HStack, Stack, Image } from "@chakra-ui/react";
-
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, } from 'recharts';
-
-import { Slider } from "@/components/ui/slider"
-
-
-export default function healthPage ()  {
-  const data = [
-    { name: 'Monday', uv: 4},
-    { name: 'Tuesday', uv: 3},
-    { name: 'Wednesday', uv: 2},
-    { name: 'Thursday', uv: 2 },
-    { name: 'Friday', uv: 3 },
-    { name: 'Saturday', uv: 1 },
-    { name: 'Sunday', uv: 4},
-  ];
-
-
-
-
-  
+export default function HealthPage() {
   return (
-    <Stack 
-      spacing={4} 
-      direction="column" 
-      align="center" 
-      mt="20px" 
-    >
+    <Stack spacing={4} direction="column" align="center" mt="20px">
       {/*****************************************Start of header*****************************************/}
       <HStack spacing={4} className="headerContainer" align="center">
         <Link href="/homePage" mt="10px" color="teal">
@@ -48,64 +23,34 @@ export default function healthPage ()  {
           <p style={{ fontSize: '18px', padding: '0 8px' }}>Account</p>
         </Link>
       </HStack>
-
-      {/* Custom divider */}
-      <div style={{ width: "360px", height: "2px", backgroundColor: "teal", margin: "16px 0" }} />
-      {/*****************************************End of header section*****************************************/}
-  
-      {/*****************************************Start of main body section*****************************************/}
-      <div className="bodyContainer" style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",  // Aligns items to the right
-        justifyContent: "flex-start",
-        width: "300px",
-        height: "100px", 
-        textAlign: "center",      // Ensures text aligns to the right
-        marginTop: "40px"
-      }}>
+      {/*****************************************Header Section End*****************************************/}
       
-
-
-
-        <LineChart
-          width={300}
-          height={300}
-          data={data}
-          margin={{
-            top: 5,
-            right: 5,
-            left: 5,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-          <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-        </LineChart>
-
-          
-        <Image 
-        height="200px"
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Smiley.svg/330px-Smiley.svg.png" />
-
-        <Slider width="100px" defaultValue={[40]} /> <Button>Submit</Button>
-
-
-
-        
-
+      {/* Body Section */}
+      <div
+        className="bodyContainer"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          justifyContent: "flex-start",
+          width: "300px",
+          height: "100px",
+          textAlign: "center",
+          marginTop: "40px"
+        }}
+      >
+        <Image
+          height="200px"
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Smiley.svg/330px-Smiley.svg.png"
+        />
+        <Slider width="100px" defaultValue={[40]} />
+        <Button>Submit</Button>
       </div>
 
-   
-        
-      {/*****************************************End of main body section*****************************************/}
-    </Stack>
+      {/* Render the LineChartComponent here */}
+      <LineChartComponent />
 
-    
+      {/*****************************************Main Body Section End*****************************************/}
+    </Stack>
   );
 }
