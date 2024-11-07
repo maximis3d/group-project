@@ -84,6 +84,7 @@ export default function healthPage ()  {
           <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
         </LineChart>
 
+          
         <Image 
         height="200px"
         src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Smiley.svg/330px-Smiley.svg.png" />
