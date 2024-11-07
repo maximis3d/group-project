@@ -1,6 +1,28 @@
+"use client"
+
 import { Link, HStack, Stack } from "@chakra-ui/react";
 import Image from 'next/image';
 import { ProgressRoot, ProgressBar, ProgressValueText } from "@/components/ui/progress";
+import React, { PureComponent } from 'react';
+import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
+
+const data = [
+  { name: 'Calories', value: 800 },
+  { name: 'Fats', value: 300 },
+  { name: 'Carbs', value: 300 },
+  { name: 'Protein', value: 200 },
+];
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+
+
+function renderCustomLabel({ name, value, x, y }) {
+  return (
+    <text x={x} y={y} fill="#333" textAnchor="middle" dominantBaseline="central">
+      {`${name}: ${value}`}
+    </text>
+  );
+}
+
 import {
   SelectContent,
   SelectItem,
@@ -78,12 +100,24 @@ export default function HomePage() {
 
         <h1 style={{ fontWeight: "bold", fontSize: "24px", marginBottom:"20px" }}>Overall Progress</h1>
 
-        <Image
-          src="/pieChart.png" 
-          alt="MyWellBeing Logo"
-          width={400} 
-          height={400}
-        />
+      <PieChart width={400} height={400} >
+        <Pie
+          data={data}
+          cx={120}
+          cy={200}
+          innerRadius={65}
+          outerRadius={80}
+          fill="#8884d8"
+          paddingAngle={5}
+          dataKey="value"
+          label ={renderCustomLabel}
+        >
+          {data.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+          ))}
+        </Pie>
+      </PieChart>
+
 
         <h1 style={{ fontWeight: "bold", fontSize: "24px", marginTop:"20px" }}>More detail</h1>
         <HStack spacing={4} className="bottomContainer" align="flex-start" width="325px" justify="flex-start">
