@@ -1,19 +1,8 @@
-"use client"
 
 import { Link, HStack, Stack } from "@chakra-ui/react";
 import Image from 'next/image';
 import { ProgressRoot, ProgressBar, ProgressValueText } from "@/components/ui/progress";
-import React, { PureComponent } from 'react';
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
-
-const data = [
-  { name: 'Calories', value: 800 },
-  { name: 'Fats', value: 300 },
-  { name: 'Carbs', value: 300 },
-  { name: 'Protein', value: 200 },
-];
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
-
+import HomeChart from "./homePieChart";
 
 function renderCustomLabel({ name, value, x, y }) {
   return (
@@ -67,12 +56,16 @@ export default function HomePage() {
         <Link href="/accountPage" mt="10px" color="teal">
           <p style={{ fontSize: '18px', padding: '0 8px' }}>Account</p>
         </Link>
-      </HStack>
+      </HStack>      
+      <HomeChart />
+
 
       {/* Custom divider */}
       <div style={{ width: "360px", height: "2px", backgroundColor: "teal", margin: "16px 0" }} />
       {/*****************************************End of header section*****************************************/}
   
+
+
       {/*****************************************Start of main body section*****************************************/}
       <div className="bodyContainer" style={{
         display: "flex",
@@ -100,23 +93,7 @@ export default function HomePage() {
 
         <h1 style={{ fontWeight: "bold", fontSize: "24px", marginBottom:"20px" }}>Overall Progress</h1>
 
-      <PieChart width={400} height={400} >
-        <Pie
-          data={data}
-          cx={120}
-          cy={200}
-          innerRadius={65}
-          outerRadius={80}
-          fill="#8884d8"
-          paddingAngle={5}
-          dataKey="value"
-          label ={renderCustomLabel}
-        >
-          {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-          ))}
-        </Pie>
-      </PieChart>
+      
 
 
         <h1 style={{ fontWeight: "bold", fontSize: "24px", marginTop:"20px" }}>More detail</h1>

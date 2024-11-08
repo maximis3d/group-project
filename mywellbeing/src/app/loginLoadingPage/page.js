@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 import { useEffect } from 'react';
 import { Link, Text, Button, HStack, Stack } from "@chakra-ui/react";
 import Image from 'next/image';

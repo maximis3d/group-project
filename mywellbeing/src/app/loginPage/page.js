@@ -58,7 +58,7 @@ export default function LoginPage() {
         marginTop: "40px"
       }}>
 
-        <Link href="/loginLoadingPage">  
+        <Link href="/homePage">  
         <Button size="lg" variant="solid" colorPalette="teal" width="200px" >Log in</Button>
         </Link>
 
