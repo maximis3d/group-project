@@ -1,6 +1,6 @@
 const readline = require('readline');
 const { activityLevel } = require('./activityLevel');
-//test
+
 let weight;
 let height;
 let age;
