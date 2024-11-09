@@ -13,6 +13,8 @@
     "axios": "^1.7.7",
     "code": "file:",
     "dotenv": "^16.4.5",
-    "express": "^4.21.1"
+    "express": "^4.21.1",
+    "mongodb": "^6.10.0",
+    "mongoose": "^8.7.2"
   }
 }
