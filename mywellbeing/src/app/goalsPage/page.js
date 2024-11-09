@@ -1,7 +1,8 @@
-import { Link, Button, HStack, Stack, Image } from "@chakra-ui/react";
+import { Link, Button, HStack, Stack, Image, Flex, Field, Input } from "@chakra-ui/react";
 import { Slider } from "@/components/ui/slider";
 import ChartGoal from "./goalChart";
 import LineChartComponent from "../healthPage/linechart";
+
 
 export default function goalsPage() {
   return (
@@ -23,10 +24,15 @@ export default function goalsPage() {
         <Link href="/accountPage" mt="10px" color="teal">
           <p style={{ fontSize: '18px', padding: '0 8px' }}>Account</p>
         </Link>
+        
       </HStack>
+
+      {/* Custom divider */}
+      <div style={{ width: "360px", height: "2px", backgroundColor: "teal", margin: "16px 0" }} />
       {/*****************************************Header Section End*****************************************/}
       
       {/* Body Section */}
+      <ChartGoal />
       <div
         className="bodyContainer"
         style={{
@@ -40,16 +46,15 @@ export default function goalsPage() {
           marginTop: "40px"
         }}
       >
-        <Image
-          height="200px"
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Smiley.svg/330px-Smiley.svg.png"
-        />
-        <Slider width="100px" defaultValue={[40]} />
-        <Button>Submit</Button>
+
+
+
       </div>
 
+
+        
       {/* Render the LineChartComponent here */}
-        <ChartGoal />
+        
 
       {/*****************************************Main Body Section End*****************************************/}
     </Stack>
