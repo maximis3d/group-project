@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-require('dotenv').config();
+const mongoose = require("mongoose");
+require("dotenv").config();
 
 // Connect to MongoDB Atlas
 
@@ -11,7 +11,7 @@ const connectDB  = async () => {
         })
         console.log("Connected to MongoDB")
     }catch (error) {
-        console.log('Error connecting to MongoDB:', error);
+        console.log("Error connecting to MongoDB:", error);
     }
 }
 

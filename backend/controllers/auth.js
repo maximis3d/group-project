@@ -1,14 +1,14 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const jwt = require("jsonwebtoken");
+const User = require("../models/User");
 
 // Register a new user
 const register = async (req, res, next) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, age, dob, weight, activity } = req.body;
 
   try {
-    const user = new User({ username, email, password: password });
+    const user = new User({ username, email, password, age, dob, weight, activity });
     await user.save();
-    res.json({ message: 'Registration successful' });
+    res.json({ message: "Registration successful" });
   } catch (error) {
     next(error);
   }
@@ -21,16 +21,16 @@ const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ username });
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const passwordMatch = await user.comparePassword(password);
     if (!passwordMatch) {
-      return res.status(401).json({ message: 'Incorrect password' });
+      return res.status(401).json({ message: "Incorrect password" });
     }
 
     const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
-      expiresIn: '1 hour'
+      expiresIn: "1 hour"
     });
     res.json({ token });
   } catch (error) {
