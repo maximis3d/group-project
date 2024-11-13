@@ -1,29 +1,24 @@
-// server.js
 const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-require('dotenv').config();
-
+const connectDB = require('./db');
 const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(cors());
-app.use(bodyParser.json());
+// Connect to MongoDB
+connectDB();
 
-// Connect to MongoDB Atlas
-mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
-.then(() => console.log('MongoDB Atlas connected'))
-.catch(err => console.error('MongoDB connection error:', err));
+// Parse JSON request body
+app.use(express.json());
+
+// Define authentication routes
+app.use('/auth', authRoutes);
+
+// Define user routes
+app.use('/user', userRoutes);
 
 // Start the server
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server started on port ${PORT}`);
 });
-app.use('/api/auth', authRoutes);
