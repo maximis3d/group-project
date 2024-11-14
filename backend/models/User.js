@@ -18,6 +18,9 @@ const userSchema = new mongoose.Schema({
     age: { type: Number, required: true },
     dob: {type: Date, required: true},
     weight: {type: Number, required: true},
+    height: {type: Number, required: true},
+    gender: {type: String, required: true},
+    calories: {type: Number, required: true},
     activity: {type: String, required: true, enum: ["Not Active", "Lightly Active", "Moderately Active", "Very Active"]}
 });
 
