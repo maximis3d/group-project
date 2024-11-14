@@ -69,6 +69,9 @@ describe("Authenticate Middleware", () => {
       age: 25,
       dob: new Date("1996-08-15"),
       weight: 70,
+      calories: 2000,
+      gender: "Male",
+      height: 175,
       activity: "Moderately Active"
     });
     await user.save();
