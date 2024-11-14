@@ -21,6 +21,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.10.0",
     "mongodb-memory-server": "^10.1.2",
-    "mongoose": "^8.8.1"
+    "mongoose": "^8.8.1",
+    "supertest": "^7.0.0"
   }
 }

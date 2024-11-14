@@ -99,7 +99,7 @@ describe("User Model", () => {
     expect(err.errors.password).toBeDefined();
   });
 
-  it("should hash the password before saving", async () => {
+  it("Should hash the password before saving", async () => {
     const user = new User({
       username: "testuser",
       email: "test@example.com",
