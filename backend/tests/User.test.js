@@ -29,6 +29,9 @@ describe("User Model", () => {
       age: 25,
       dob: new Date("1996-08-15"),
       weight: 70,
+      calories: 2000,
+      gender: "Male",
+      height: 175,
       activity: "Moderately Active"
     });
     
@@ -44,6 +47,9 @@ describe("User Model", () => {
       age: 25,
       dob: new Date("1996-08-15"),
       weight: 70,
+      calories: 2000,
+      gender: "Male",
+      height: 175,
       activity: "Moderately Active"
     });
 
@@ -64,6 +70,9 @@ describe("User Model", () => {
       password: "password1!",
       age: 25,
       dob: new Date("1996-08-15"),
+      calories: 2000,
+      gender: "Male",
+      height: 175,
       weight: 70,
       activity: "Moderately Active"
     });
@@ -107,6 +116,9 @@ describe("User Model", () => {
       age: 25,
       dob: new Date("1996-08-15"),
       weight: 70,
+      calories: 2000,
+      gender: "Male",
+      height: 175,
       activity: "Moderately Active"
     });
 
@@ -124,6 +136,9 @@ describe("User Model", () => {
       age: 25,
       dob: new Date("1996-08-15"),
       weight: 70,
+      calories: 2000,
+      gender: "Male",
+      height: 175,
       activity: "Moderately Active"
     });
 
@@ -144,6 +159,9 @@ describe("User Model", () => {
       age: 25,
       dob: new Date("1996-08-15"),
       weight: 70,
+      calories: 2000,
+      gender: "Male",
+      height: 175,
       activity: "Super Active" // Invalid value
     });
 
