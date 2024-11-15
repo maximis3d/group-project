@@ -4,6 +4,7 @@ import { Field } from "@/components/ui/field";
 import { Input } from "@chakra-ui/react";
 import { Flex } from "@chakra-ui/react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { GenderDD } from "./genderDD";
 
 import {
   SelectContent,
@@ -14,6 +15,7 @@ import {
   SelectValueText,
 } from "@/components/ui/select";
 
+{/*}
 const activityLevel = [
   { label: "Not Active (no exercise)", value: "Not Active" },
   { label: "Slightly active (exercise a couple times a week)", value: "Lightly Active" },
@@ -26,6 +28,8 @@ const genderOptions = [
   { label: "Female", value: "Female" },
   { label: "Other", value: "Other" },
 ];
+
+*/}
 
 export default function registerPage() {
   return (
@@ -94,38 +98,41 @@ export default function registerPage() {
           <Input placeholder="Enter your height in KG" size="md" />
         </Field>
 
-        <SelectRoot size="md"> {/* You can choose the desired size */}
+        {/* <SelectRoot 
+          size="md"
+          defaultValue=""
+        >
           <SelectLabel color="grey" mt="20px">Gender</SelectLabel>
           <SelectTrigger>
             <SelectValueText placeholder="Select your gender" color="grey"/>
           </SelectTrigger>
           <SelectContent>
-            {genderOptions.map((genderOptions) => (
-              <SelectItem item ={genderOptions} key={genderOptions.value} >
-                {genderOptions.label }
-              </SelectItem >
+            {genderOptions.map((option) => (
+              <SelectItem 
+                value={option.value}
+                key={option.value}
+              >
+                {option.label}
+              </SelectItem>
             ))}
           </SelectContent>
-        </SelectRoot>
+        </SelectRoot> */}
+
+      <Field label="Gender" color="grey" mt="20px"> 
+          <Input placeholder="Enter your gender in male or female" size="md" />
+        </Field>
+
+
+      
 
         <Field label="Calories" color="grey" mt="20px"> 
           <Input placeholder="Whats current calorie intake" size="md" />
         </Field>
         
-
-        <SelectRoot size="md"> {/* You can choose the desired size */}
-          <SelectLabel color="grey" mt="20px">Activity Level</SelectLabel>
-          <SelectTrigger>
-            <SelectValueText placeholder="Select activity level" color="grey"/>
-          </SelectTrigger>
-          <SelectContent>
-            {activityLevel.map((activityLevel) => (
-              <SelectItem item={activityLevel} key={activityLevel.value}>
-                {activityLevel.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </SelectRoot>
+      
+        <Field label="Activity level" color="grey" mt="20px" helperText="Enter your activity level in the format Not Active, Lightly Active, Moderately Active, Very Active"> 
+          <Input placeholder="Enter your activity level" size="md" />
+        </Field>
 
         
 
