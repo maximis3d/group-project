@@ -1,12 +1,20 @@
-"use client"
+"use client";
 import React, { PureComponent } from 'react';
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import { calculateMacronutrients } from '../../utils/MacroMicroNutrients';
 
+// Define the total daily calories
+const TOTAL_CALORIES = 2000;
+
+// Calculate macronutrients based on the fixed total calories
+const macros = calculateMacronutrients(TOTAL_CALORIES);
+
+// Prepare data for the pie chart
 const data = [
-  { name: 'Protein', value: 1200 },
-  { name: 'Fats', value: 500 },
-  { name: 'Carbs', value: 400 },
-  { name: 'Calories', value: 350 },
+  { name: 'Calories', value: TOTAL_CALORIES },
+  { name: 'Protein', value: macros.Protein },
+  { name: 'Fats', value: macros.Fats },
+  { name: 'Carbs', value: macros.Carbohydrates },
 ];
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
