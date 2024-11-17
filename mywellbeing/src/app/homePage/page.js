@@ -56,6 +56,9 @@ export default function HomePage() {
         <Link href="/accountPage" mt="10px" color="teal">
           <p style={{ fontSize: '18px', padding: '0 8px' }}>Account</p>
         </Link>
+        <Link href="/addFoods" mt="10px" color="teal">
+          <p style={{ fontSize: '18px', padding: '0 8px' }}>Add Foods</p>
+        </Link>
       </HStack>      
       <HomeChart />
 

@@ -19,8 +19,7 @@ const login = async (req, res, next) => {
   const { username, password } = req.body;
 
   try {
-    const user = await User.findOne({ username });
-    if (!user) {
+    user = await User.findOne({ username: { $regex: new RegExp(`^${username}$`, 'i') } });    if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
