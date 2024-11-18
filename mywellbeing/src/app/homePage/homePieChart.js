@@ -4,7 +4,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { calculateMacronutrients } from '../../utils/MacroMicroNutrients';
 
 // Define the total daily calories
-const TOTAL_CALORIES = 2000;
+const TOTAL_CALORIES = 1000;
 
 // Calculate macronutrients based on the fixed total calories
 const macros = calculateMacronutrients(TOTAL_CALORIES);
