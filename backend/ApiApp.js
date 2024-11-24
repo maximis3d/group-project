@@ -8,11 +8,7 @@ const APP_ID = process.env.API_ID;
 const API_KEY = process.env.API_KEY;
 const BASE_URL = 'https://trackapi.nutritionix.com/v2';
 
-
-const app = express();
-app.use(express.json());
-
-
+// Search Route
 router.get('/search', async (req, res) => {
   const { query } = req.query;
 
@@ -22,15 +18,12 @@ router.get('/search', async (req, res) => {
 
   try {
     const response = await axios.get(`${BASE_URL}/search/instant`, {
-      params: {
-        query: query,
-      },
+      params: { query },
       headers: {
         'x-app-id': APP_ID,
         'x-app-key': API_KEY,
       },
     });
-    
     
     res.json(response.data);
   } catch (error) {
@@ -39,7 +32,7 @@ router.get('/search', async (req, res) => {
   }
 });
 
-
+// Nutrition Route
 router.post('/nutrition', async (req, res) => {
   const { food } = req.body;
 
@@ -49,9 +42,7 @@ router.post('/nutrition', async (req, res) => {
 
   try {
     const response = await axios.post(`${BASE_URL}/natural/nutrients`, 
-      {
-        query: food,
-      }, 
+      { query: food }, 
       {
         headers: {
           'x-app-id': APP_ID,
@@ -60,7 +51,6 @@ router.post('/nutrition', async (req, res) => {
         },
       }
     );
-
     
     res.json(response.data);
   } catch (error) {
@@ -69,6 +59,4 @@ router.post('/nutrition', async (req, res) => {
   }
 });
 
-app.use('/api', router); 
-
-module.exports = app;
+module.exports = router;

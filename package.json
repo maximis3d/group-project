@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd mywellbeing && npm run dev",
     "test": "jest"
   },
   "keywords": [],
@@ -23,6 +26,10 @@
     "mongodb": "^6.10.0",
     "mongodb-memory-server": "^10.1.2",
     "mongoose": "^8.8.1",
+    "next": "^15.0.3",
     "supertest": "^7.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
   }
 }

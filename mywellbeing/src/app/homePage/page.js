@@ -50,18 +50,10 @@ export default function HomePage() {
         <Link href="/accountPage" mt="10px" color="teal">
           <p style={{ fontSize: '18px', padding: '0 8px' }}>Account</p>
         </Link>
-<<<<<<< HEAD
         <Link href="/addFoods" mt="10px" color="teal">
           <p style={{ fontSize: '18px', padding: '0 8px' }}>Add Foods</p>
         </Link>
       </HStack>      
-=======
-      </HStack>   
-      {/* Custom divider */}
-      <div style={{ width: "360px", height: "2px", backgroundColor: "teal", margin: "16px 0" }} />
-
-
->>>>>>> combined-branch
       <HomeChart />
 
 
