@@ -29,8 +29,8 @@ export default function AddFoodsPage() {
         params: { query },
       });
 
-      // Assuming the API returns an array of food items under `common`
-      setResults(response.data.common || []);
+      // Access the 'results' array from the response
+      setResults(response.data.results || []);
     } catch (err) {
       console.error("Search error:", err);
       setError("Failed to fetch search results. Please try again.");
@@ -100,13 +100,16 @@ export default function AddFoodsPage() {
         )}
         {!loading && !error && results.length > 0 && (
           <DataListRoot pt="20px" orientation={"horizontal"}>
-            {results.map((item, index) => (
-              <DataListItem
-                key={index}
-                label={<strong>{item.food_name || "Unknown Food"}</strong>}
-                value={`Calories: ${item.nf_calories || 'N/A'}, Protein: ${item.nf_protein || 'N/A'}, Fat: ${item.nf_total_fat || 'N/A'}, Carbs: ${item.nf_total_carbohydrate || 'N/A'}`}
-              />
-            ))}
+            {results.map((item, index) => {
+              const nutrients = item.nutrients?.foods?.[0] || {};
+              return (
+                <DataListItem
+                  key={index}
+                  label={<strong>{item.food_name || "Unknown Food"}</strong>}
+                  value={`Calories: ${nutrients.nf_calories || 'N/A'}, Protein: ${nutrients.nf_protein || 'N/A'}, Fat: ${nutrients.nf_total_fat || 'N/A'}, Carbs: ${nutrients.nf_total_carbohydrate || 'N/A'}`}
+                />
+              );
+            })}
           </DataListRoot>
         )}
         {!loading && !error && results.length === 0 && query && (
