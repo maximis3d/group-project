@@ -1,24 +1,48 @@
+require('dotenv').config(); 
+
 const express = require("express");
-const connectDB = require("./db");
+const connectDB = require("./db"); // Import the connectDB function
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
+const apiRoutes = require("./ApiApp"); // Import the ApiApp router
+const mongoose = require('mongoose');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-
-// Connect to MongoDB
-connectDB();
+const PORT = process.env.PORT || 5000;
 
 // Parse JSON request body
 app.use(express.json());
 
-// Define authentication routes
-app.use("/auth", authRoutes);
+// Connect to MongoDB using the external connectDB function
+connectDB()
+  .then(() => console.log("MongoDB Atlas connected"))
+  .catch(err => console.error("MongoDB connection error:", err));
 
-// Define user routes
-app.use("/user", userRoutes);
+// Define a new route to get usernames
+app.get('/api/usernames', async (req, res) => {
+  try {
+    const database = mongoose.connection.db;
+    const collection = database.collection('collectionName'); // Replace with your actual collection name
+
+    const usernames = await collection.find({}, { projection: { username: 1, _id: 0 } }).toArray();
+    res.json(usernames);
+  } catch (error) {
+    console.error("Error fetching usernames:", error);
+    res.status(500).send("Error fetching usernames");
+  }
+});
+
+// Define routes
+app.use('/api/auth', authRoutes); // Only one path for authRoutes
+app.use("/user", userRoutes); // Keep this if /user route is needed
+app.use('/api', apiRoutes); // Integrate ApiApp routes
+
+// Health Check Route (Optional, but recommended)
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK', message: 'Server is running smoothly.' });
+});
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });

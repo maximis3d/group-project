@@ -4,13 +4,7 @@ import Image from 'next/image';
 import { ProgressRoot, ProgressBar, ProgressValueText } from "@/components/ui/progress";
 import HomeChart from "./homePieChart";
 
-function renderCustomLabel({ name, value, x, y }) {
-  return (
-    <text x={x} y={y} fill="#333" textAnchor="middle" dominantBaseline="central">
-      {`${name}: ${value}`}
-    </text>
-  );
-}
+
 
 import {
   SelectContent,
@@ -94,7 +88,6 @@ export default function HomePage() {
           </SelectContent>
         </SelectRoot>
 
-        <h1 style={{ fontWeight: "bold", fontSize: "24px", marginBottom:"20px" }}>Overall Progress</h1>
 
       
 
