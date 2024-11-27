@@ -8,7 +8,7 @@ process.env.API_ID = 'test_api_id';
 process.env.API_KEY = 'test_api_key';
 
 
-const app = require('./ApiApp'); 
+const app = require('../ApiApp'); 
 
 
 jest.mock('axios');
