@@ -42,7 +42,7 @@ router.get('/search', async (req, res) => {
           { query: food.food_name },
           {
             headers: {
-              'x-app-id': APP_ID,
+              'x-app-id': APP_ID, 
               'x-app-key': API_KEY,
               'Content-Type': 'application/json',
             },
