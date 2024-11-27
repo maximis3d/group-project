@@ -37,17 +37,4 @@ const login = async (req, res, next) => {
   }
 };
 
-const usernames = async(res) => {
-  try {
-    const database = mongoose.connection.db;
-    const collection = database.collection('collectionName'); // Replace with your actual collection name
-
-    const usernames = await collection.find({}, { projection: { username: 1, _id: 0 } }).toArray();
-    res.json(usernames);
-  } catch (error) {
-    console.error("Error fetching usernames:", error);
-    res.status(500).send("Error fetching usernames");
-  }
-}
-  
-module.exports = { register, login, usernames };
+module.exports = { register, login };

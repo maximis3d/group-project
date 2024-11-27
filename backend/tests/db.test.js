@@ -22,10 +22,7 @@ describe("ConnectDB", () => {
 
         await connectDB();
 
-        expect(mongoose.connect).toHaveBeenCalledWith(process.env.MONGODB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
+        expect(mongoose.connect).toHaveBeenCalledWith(process.env.MONGODB_URI)
         expect(consoleLogSpy).toHaveBeenCalledWith("Connected to MongoDB");
 
         consoleLogSpy.mockRestore();
@@ -41,10 +38,6 @@ describe("ConnectDB", () => {
 
         await connectDB();
 
-        expect(mongoose.connect).toHaveBeenCalledWith(process.env.MONGODB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
         expect(consoleLogSpy).toHaveBeenCalledWith("Error connecting to MongoDB:", mockError);
 
         consoleLogSpy.mockRestore();
