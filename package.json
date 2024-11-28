@@ -8,7 +8,8 @@
   ],
   "scripts": {
     "dev": "concurrently \"npm run dev --workspace backend --silent\" \"npm run dev --workspace mywellbeing --silent\"",
-    "start": "npm run dev"
+    "start": "npm run dev",
+    "test": "jest"
   },
   "devDependencies": {
     "concurrently": "^7.0.0"
