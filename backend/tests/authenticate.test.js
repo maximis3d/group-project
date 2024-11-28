@@ -12,7 +12,7 @@ let app, mongoServer;
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
   const uri = mongoServer.getUri();
-  await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+  await mongoose.connect(uri);
 
   // Setting up a simple express app to test middleware
   app = express();

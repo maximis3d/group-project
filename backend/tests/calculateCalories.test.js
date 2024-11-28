@@ -1,5 +1,5 @@
 const { calculateBMR, calculateTDEE } = require('../calculateCalories');
-const { activityLevel } = require('./activityLevel');
+const { activityLevel } = require('../activityLevel');
 jest.mock('./activityLevel');
 
 describe("calculateCalories", () => {
