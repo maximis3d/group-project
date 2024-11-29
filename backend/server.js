@@ -82,6 +82,43 @@ app.post("/login", async (req, res, next) => {
   }
 });
 
+app.post("/register", async (req, res, next) => {
+  const {
+    username,
+    email,
+    password,
+    age,
+    dob,
+    weight,
+    height,
+    gender,
+    calories,
+    activity,
+  } = req.body;
+
+  try {
+    const user = new User({
+      username,
+      email,
+      password,
+      age,
+      dob,
+      weight,
+      height,
+      gender,
+      calories,
+      activity,
+    });
+
+    await user.save();
+    res.json({ message: "Registration successful" });
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+
 
 // Start the server
 app.listen(PORT, () => {
