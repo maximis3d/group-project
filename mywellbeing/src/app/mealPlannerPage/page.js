@@ -1,7 +1,7 @@
 
 
 
-import { Stack, HStack, Link,} from "@chakra-ui/react"
+import { Stack, HStack, Link, VisuallyHidden,} from "@chakra-ui/react"
 
 import { Center } from "@chakra-ui/react";
 
@@ -53,12 +53,8 @@ function Home() {
   return (
     <div>
       <Center>
-
-      
-
       <Stack gap = "4">
 
-        {/*****************************************Start of header*****************************************/}
       <HStack spacing={4} className="headerContainer" align="center">
         <Link href="/homePage" mt="10px" color="teal">
           <p style={{ fontSize: '20px', padding: '0 15px' }}>Home</p>
@@ -76,7 +72,7 @@ function Home() {
         
       <div style={{ width: "400px", height: "2px", backgroundColor: "teal", margin: "3px 0" }} />
 
-
+{/*tabs*/}
       <Tabs.Root defaultValue="Bulking" size="lg">
       <Tabs.List>
         <Tabs.Trigger value="Bulking">
@@ -92,7 +88,123 @@ function Home() {
           General
         </Tabs.Trigger>
       </Tabs.List>
+{/*end of tabs*/}
 
+
+
+
+{/*generalkajd*/}
+<Tabs.Content value="General">
+      <Card.Root maxW="sm" overflow="hidden" gap="4">
+      <Image      
+       height="300px"
+        src="https://www.togethertoeat.com/wp-content/uploads/2023/08/Oat-Smoothie-Bowl-strawberry-and-raspberry-smoothie-bowl-2.jpg?ezimgfmt=ngcb5/notWebP"
+        alt="Green double couch with wooden legs"
+      />
+      <Card.Body gap="2">
+        <Card.Title>Oats and Protein Smoothie Bowl</Card.Title>
+        <Card.Description>
+A creamy blend of rolled oats, protein powder, Greek yogurt, and fresh fruits like bananas, strawberries, and blueberries, topped with granola and a drizzle of honey for a nutritious and energizing breakfast or post-workout meal
+        </Card.Description>
+        <Text textStyle="2xl" fontWeight="medium" letterSpacing="tight" mt="2">
+          550 k/cal  30g protein
+        </Text>
+      </Card.Body>
+      <Card.Footer gap="2">
+      <DialogRoot>
+      <DialogTrigger asChild>
+        <Button variant="outline" size="sm">
+          View
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Oats and Protein Smoothie Bowl</DialogTitle>
+        </DialogHeader>
+        <DialogBody>
+        <Image      
+       height="300px"
+       width="500px"
+        src="https://www.togethertoeat.com/wp-content/uploads/2023/08/Oat-Smoothie-Bowl-strawberry-and-raspberry-smoothie-bowl-2.jpg?ezimgfmt=ngcb5/notWebP"
+        alt="Green double couch with wooden legs"
+        paddingBottom="30px"
+      />
+          <p>
+          The Oat and Protein Smoothie Bowl is a creamy, nutrient-packed breakfast that combines rolled oats, protein powder, Greek yogurt, and a medley of fresh fruits like bananas, strawberries, and blueberries. Topped with additional fruit, granola, and a drizzle of honey, this bowl offers a perfect balance of protein, healthy fats, and complex carbohydrates. It’s not only delicious and visually appealing but also a great way to kickstart your day or replenish after a workout. Enjoy it with a spoon for a satisfying and energizing meal!
+          </p>
+          <Heading paddingTop="20px">Ingrediants</Heading>
+          <List.Root>
+          <List.Item>
+          1/2 cup rolled oats
+          </List.Item>
+          <List.Item>
+          1 scoop vanilla protein powder (or any flavor you prefer)
+          </List.Item>
+          <List.Item>
+          1/2 cup Greek yogurt (plain or vanilla, for added protein and creaminess)
+          </List.Item>
+          <List.Item>
+          1/2 cup almond milk (or milk of choice; add more for a thinner consistency)
+          </List.Item>
+          <List.Item>
+          1/2 banana (sliced; save the other half for topping)
+          </List.Item>
+          <List.Item>
+          1/2 cup strawberries (fresh or frozen)
+          </List.Item>
+          <List.Item>
+          1/4 cup blueberries (fresh or frozen)
+          </List.Item>
+          <List.Item>
+          1 tablespoon almond butter (or any nut butter you like, for healthy fats)
+          </List.Item>
+          
+        </List.Root>
+       
+        <Heading paddingTop="20px">Instructions</Heading>
+        <List.Root as="ol">
+          <List.Item>
+          Blend the Smoothie Base: In a blender, add oats, protein powder, Greek yogurt, almond milk, half a banana, 1/2 cup strawberries, and 1/4 cup blueberries. Blend until smooth and creamy.
+</List.Item>
+          <List.Item>
+          Adjust Consistency: Check the texture and adjust by adding more milk if needed to get the desired thickness. It should be thick enough to eat with a spoon.
+</List.Item>
+          <List.Item>
+          Serve and Top: Pour the smoothie base into a bowl. Top with sliced banana, strawberries, blueberries, granola, chia seeds, and a drizzle of honey or agave syrup, if desired.
+          </List.Item>
+          <List.Item>
+          Enjoy! This smoothie bowl is best enjoyed fresh.
+          </List.Item>
+        </List.Root>
+
+        </DialogBody>
+        <DialogFooter>
+          <DialogActionTrigger asChild>
+            <Button variant="outline">Cancel</Button>
+          </DialogActionTrigger>
+          <Button>Save</Button>
+        </DialogFooter>
+        <DialogCloseTrigger />
+      </DialogContent>
+    </DialogRoot>
+
+
+    <Icon fontSize="2xl" color="pink.700">
+      <IconButton variant="ghost" _hover={{ boxShadow: 'none', bg: 'transparent' }}   
+      
+       
+      >
+      <VscAdd />
+       
+      </IconButton>
+  </Icon>
+
+      </Card.Footer>
+    </Card.Root>
+    </Tabs.Content>
+{/* Body Section */}
+      
+{/* Bulking */}
       {/*First Card */}
       <Tabs.Content value="Bulking">
       <Card.Root maxW="sm" overflow="hidden" gap="4">
