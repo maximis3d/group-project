@@ -7,11 +7,17 @@
     "mywellbeing"
   ],
   "scripts": {
-    "dev": "concurrently \"npm run dev --workspace backend --silent\" \"npm run dev --workspace mywellbeing --silent\"",
+    "dev": "concurrently \"nodemon backend/server\" \"npm run dev --workspace mywellbeing --silent\"",
     "start": "npm run dev",
     "test": "jest"
   },
   "devDependencies": {
     "concurrently": "^7.0.0"
+  },
+  "dependencies": {
+    "connect-mongodb-session": "^5.0.0",
+    "cors": "^2.8.5",
+    "ejs": "^3.1.10",
+    "nodemon": "^3.1.7"
   }
 }

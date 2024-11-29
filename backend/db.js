@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const path = require("path")
+const MongoDBSession = require("connect-mongodb-session")(session)
+
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 // Connect to MongoDB Atlas
