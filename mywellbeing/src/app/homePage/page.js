@@ -1,3 +1,5 @@
+"use client"
+import { useState, useEffect } from "react";
 
 import { Link, HStack, Stack } from "@chakra-ui/react";
 import Image from 'next/image';
@@ -28,9 +30,40 @@ const calendarToggle = [
   { label: "3 days ago", value: "3 days ago" },
 ];
 
-
-
 export default function HomePage() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/validate-session", {
+          credentials: "include", // Ensures cookies are sent
+        });
+        if (response.ok) {
+          setIsAuthenticated(true);
+        } else {
+          window.location.href = "/loginPage"; // Redirect if not authenticated
+        }
+      } catch (error) {
+        console.error("Error validating session:", error);
+        window.location.href = "/loginPage";
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkSession();
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isAuthenticated) {
+    return null; // Redirecting, so no need to show anything
+  }
+
   return (
     <Stack spacing={4} direction="column" align="center" mt="20px">
       {/*****************************************Start of header*****************************************/}
