@@ -2,7 +2,7 @@ const express = require("express");
 const connectDB = require("./db");
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
-
+const apiRoutes = require("./ApiApp");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -17,6 +17,9 @@ app.use("/auth", authRoutes);
 
 // Define user routes
 app.use("/user", userRoutes);
+
+// Define API routes
+app.use("/api", apiRoutes);
 
 // Start the server
 app.listen(PORT, () => {
