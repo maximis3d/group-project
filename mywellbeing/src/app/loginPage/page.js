@@ -27,7 +27,7 @@ export default function LoginPage() {
       setLoading(false);
   
       if (response.ok) {
-        window.location.href = result.redirectUrl("/homePage");
+        window.location.href = "/homePage"
       } else {
         setErrorMessage(result.message || "An error occurred. Please try again later.");
       }
