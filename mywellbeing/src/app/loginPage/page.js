@@ -77,7 +77,7 @@ export default function LoginPage() {
           Log in
         </Button>
 
-        <Link href="/register" mt="10px">
+        <Link href="/registerPage" mt="10px">
           <p style={{ fontSize: "12px", textDecoration: "underline" }}>Register for an account</p>
         </Link>
       </form>
