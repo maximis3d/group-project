@@ -1,7 +1,8 @@
-
-
+"use client";
 
 import { Stack, HStack, Link, VisuallyHidden,} from "@chakra-ui/react"
+
+import { useState } from 'react';
 
 import { Center } from "@chakra-ui/react";
 
@@ -48,7 +49,7 @@ import { IconButton } from "@chakra-ui/react"
 
 
 function Home() {
-
+  const [oatsInFavourites, setOatsInFavourites] = useState(false);
 
   return (
     <div>
@@ -83,9 +84,9 @@ function Home() {
         <IoBody color="teal" />
         Cutting
         </Tabs.Trigger>
-        <Tabs.Trigger value="General">
+        <Tabs.Trigger value="Favourite">
         <GiHotMeal color="teal" />
-          General
+        Favourite
         </Tabs.Trigger>
       </Tabs.List>
 {/*end of tabs*/}
@@ -93,8 +94,9 @@ function Home() {
 
 
 
-{/*generalkajd*/}
-<Tabs.Content value="General">
+{/*general*/}
+<VisuallyHidden>
+<Tabs.Content value="Favourite">
       <Card.Root maxW="sm" overflow="hidden" gap="4">
       <Image      
        height="300px"
@@ -202,7 +204,9 @@ A creamy blend of rolled oats, protein powder, Greek yogurt, and fresh fruits li
       </Card.Footer>
     </Card.Root>
     </Tabs.Content>
-{/* Body Section */}
+
+    </VisuallyHidden>
+{/* end of Favourite */}
       
 {/* Bulking */}
       {/*First Card */}
@@ -305,7 +309,26 @@ A creamy blend of rolled oats, protein powder, Greek yogurt, and fresh fruits li
       <IconButton variant="ghost" _hover={{ boxShadow: 'none', bg: 'transparent' }}   
       
        
+      >// In the bulking section
+      <IconButton
+        variant="ghost"
+        _hover={{ boxShadow: 'none', bg: 'transparent' }}
+        onClick={() => {
+          // Toggle the visuallyHidden prop on the oats card in the favourite tab
+          setOatsInFavourites(!oatsInFavourites);
+        }}
       >
+        <VscAdd />
+      </IconButton>
+      
+      // In the favourite tab
+      <Tabs.Content value="Favourite">
+        <VisuallyHidden when={!oatsInFavourites}>
+          <Card.Root maxW="sm" overflow="hidden" gap="4">
+            {/* Oats card content */}
+          </Card.Root>
+        </VisuallyHidden>
+      </Tabs.Content>
       <VscAdd />
        
       </IconButton>
