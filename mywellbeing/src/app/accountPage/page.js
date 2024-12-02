@@ -1,9 +1,29 @@
-import { Link, Text, Button, HStack, Stack } from "@chakra-ui/react";
-import Image from 'next/image';
+import { Link, Button, HStack, Stack } from "@chakra-ui/react";
 import { Field } from "@/components/ui/field";
 import { Input } from "@chakra-ui/react";
 
-export default function AccountPage() {
+// Fetch user data from the API
+async function fetchUserData() {
+  let userData = {};
+  try {
+    const response = await fetch('http://localhost:3000/user/profile', { // Corrected API endpoint
+      method: 'GET',
+      credentials: 'include', // Include credentials if using cookies for authentication
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    userData = await response.json(); // Parse the response as JSON
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+  }
+  return userData; // Return the fetched user data
+}
+
+// Server component
+export default async function AccountPage() {
+  const userData = await fetchUserData(); // Fetch user data
+
   return (
     <Stack 
       spacing={4} 
@@ -11,95 +31,46 @@ export default function AccountPage() {
       align="center" 
       mt="20px" 
     >
-      {/*****************************************Start of header*****************************************/}
-      <HStack spacing={4} className="headerContainer" align="center">
-        <Link href="/homePage" mt="10px" color="teal">
-          <p style={{ fontSize: '18px', padding: '0 8px' }}>Home</p>
-        </Link>
-        <Link href="/mealPlannerPage" mt="10px" color="teal">
-          <p style={{ fontSize: '18px', padding: '0 8px' }}>Meals</p>
-        </Link>
-        <Link href="/healthPage" mt="10px" color="teal">
-          <p style={{ fontSize: '18px', padding: '0 8px' }}>Health</p>
-        </Link>
-        <Link href="/goalsPage" mt="10px" color="teal">
-          <p style={{ fontSize: '18px', padding: '0 8px' }}>Goals</p>
-        </Link>
-        <Link href="/accountPage" mt="10px" color="teal">
-          <p style={{ fontSize: '18px', padding: '0 8px' }}>Account</p>
-        </Link>
+      {/* Header Section */}
+      <HStack spacing={1} className="headerContainer" align="center">
+        <h1 style={{ color: "teal", fontWeight: "bold", fontSize:"24px"}}>My Account</h1>
       </HStack>
 
-      {/* Custom divider */}
-      <div style={{ width: "360px", height: "2px", backgroundColor: "teal", margin: "16px 0" }} />
-      {/*****************************************End of header section*****************************************/}
-  
-      {/*****************************************Start of main body section*****************************************/}
+      {/* Main Body Section */}
       <div className="bodyContainer" style={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
+        alignItems: "center",  
         justifyContent: "flex-start",
         width: "300px",
-        textAlign: "center", 
-        marginTop: "20px"
+        marginTop: "40px"
       }}>
-        
-        {/* Adding HStack to group Input and Change button side by side */}
-        <Field label="Your name" color="grey" mt="20px"> 
-          <HStack>
-            <Input placeholder="Will C" size="md" width="200px" />
-            <Button size="sm" colorPalette="teal">Change</Button>
-          </HStack>
+        <h1 style={{ fontWeight: "bold", fontSize: "24px", width: "100%" }}>Your Details</h1> 
+
+        <Field label="Username" color="grey" mt="20px"> 
+          <Input 
+            name="username"
+            placeholder="Your username username" 
+            size="md" 
+            value={userData.username || ''} // Populate with fetched data
+            readOnly
+          />
         </Field>
 
-        <Field label="Your date of birth" color="grey" mt="20px"> 
-          <HStack>
-            <Input placeholder="14/08/2005" size="md" width="200px" />
-            <Button size="sm" colorPalette="teal">Change</Button>
-          </HStack>
-        </Field>
+        {/* Repeat for other fields... */}
 
-        <Field label="Your phone number" color="grey" mt="20px"> 
-          <HStack>
-            <Input placeholder="07529475558" size="md" width="200px" />
-            <Button size="sm" colorPalette="teal">Change</Button>
-          </HStack>
-        </Field>
-
-        <Field label="Your email" color="grey" mt="20px"> 
-          <HStack>
-            <Input placeholder="w21813663@northumbria.ac.uk" width="200px" size="md" />
-            <Button size="sm" colorPalette="teal">Change</Button>
-          </HStack>
-        </Field>
-
-        <Field label="Your password" color="grey" mt="20px"> 
-          <HStack>
-            <Input placeholder="••••••••••••••••" size="md" width="200px" type="password" />
-            <Button size="sm" colorPalette="teal">Change</Button>
-          </HStack>
-        </Field>
-
-        <Field label="Your height" color="grey" mt="20px"> 
-          <HStack>
-            <Input placeholder="170cm" size="md" width="200px" />
-            <Button size="sm" colorPalette="teal">Change</Button>
-          </HStack>
-        </Field>
-
-        <Field label="Your weight" color="grey" mt="20px" > 
-          <HStack>
-            <Input placeholder="75kg" size="md" width="200px" />
-            <Button size="sm" colorPalette="teal">Change</Button>
-          </HStack>
-        </Field>
-
-        <Button as={Link} href="/loginPage" size="lg" variant="solid" width="200px" colorPalette="red" mt="20px" mb="20px">
-          Log out
+        <Button 
+          as={Link} 
+          href="/editAccountPage" // Link to an edit page if needed
+          size="lg" 
+          variant="solid" 
+          colorPalette="teal" 
+          width="200px"
+          mt="40px"
+        >
+          Edit Details
         </Button>
       </div>
-      {/*****************************************End of main body section*****************************************/}
     </Stack>
   );
 }
