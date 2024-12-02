@@ -1,8 +1,25 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Link, Text, Button, HStack, Stack, Spinner } from "@chakra-ui/react";
+import { Link, Button, HStack, Stack, Spinner } from "@chakra-ui/react";
 import { Field } from "@/components/ui/field";
 import { Input } from "@chakra-ui/react";
+
+// Create a reusable component to render each form field
+const UserDetailField = ({ label, value, onChange, onUpdate, fieldName }) => (
+  <Field label={label} color="grey" mt="20px">
+    <HStack>
+      <Input
+        value={value}
+        onChange={onChange(fieldName)}
+        size="md"
+        width="200px"
+      />
+      <Button size="sm" colorPalette="teal" onClick={() => onUpdate(fieldName)}>
+        Change
+      </Button>
+    </HStack>
+  </Field>
+);
 
 export default function AccountPage() {
   const [formData, setFormData] = useState({
@@ -17,13 +34,13 @@ export default function AccountPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch the current user details from the backend
+  // Fetch user details from the backend
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
         const response = await fetch("http://localhost:5000/user", {
           method: "GET",
-          credentials: "include",
+          credentials: "include", // Include session cookie to identify the user
         });
         const data = await response.json();
 
@@ -51,10 +68,12 @@ export default function AccountPage() {
     fetchUserDetails();
   }, []);
 
+  // Handle input changes
   const handleChange = (field) => (e) => {
     setFormData({ ...formData, [field]: e.target.value });
   };
 
+  // Handle update for a specific field
   const handleUpdate = async (field) => {
     try {
       const response = await fetch("http://localhost:5000/update-details", {
@@ -78,6 +97,7 @@ export default function AccountPage() {
     }
   };
 
+  // If loading, show spinner
   if (isLoading) {
     return <Spinner size="xl" />;
   }
@@ -117,78 +137,24 @@ export default function AccountPage() {
         textAlign: "center", 
         marginTop: "20px"
       }}>
-        {/* Render user details */}
-        <Field label="Your name" color="grey" mt="20px"> 
-          <HStack>
-            <Input
-              value={formData.username}
-              onChange={handleChange("username")}
-              size="md"
-              width="200px"
-            />
-            <Button size="sm" colorPalette="teal" onClick={() => handleUpdate("username")}>Change</Button>
-          </HStack>
-        </Field>
-
-        <Field label="Your email" color="grey" mt="20px">
-          <HStack>
-            <Input
-              value={formData.email}
-              onChange={handleChange("email")}
-              size="md"
-              width="200px"
-            />
-            <Button size="sm" colorPalette="teal" onClick={() => handleUpdate("email")}>Change</Button>
-          </HStack>
-        </Field>
-
-        <Field label="Your date of birth" color="grey" mt="20px">
-          <HStack>
-            <Input
-              value={formData.dob}
-              onChange={handleChange("dob")}
-              size="md"
-              width="200px"
-            />
-            <Button size="sm" colorPalette="teal" onClick={() => handleUpdate("dob")}>Change</Button>
-          </HStack>
-        </Field>
-
-        <Field label="Your height" color="grey" mt="20px">
-          <HStack>
-            <Input
-              value={formData.height}
-              onChange={handleChange("height")}
-              size="md"
-              width="200px"
-            />
-            <Button size="sm" colorPalette="teal" onClick={() => handleUpdate("height")}>Change</Button>
-          </HStack>
-        </Field>
-
-        <Field label="Your weight" color="grey" mt="20px">
-          <HStack>
-            <Input
-              value={formData.weight}
-              onChange={handleChange("weight")}
-              size="md"
-              width="200px"
-            />
-            <Button size="sm" colorPalette="teal" onClick={() => handleUpdate("weight")}>Change</Button>
-          </HStack>
-        </Field>
-
-        <Field label="Your phone number" color="grey" mt="20px">
-          <HStack>
-            <Input
-              value={formData.phoneNumber}
-              onChange={handleChange("phoneNumber")}
-              size="md"
-              width="200px"
-            />
-            <Button size="sm" colorPalette="teal" onClick={() => handleUpdate("phoneNumber")}>Change</Button>
-          </HStack>
-        </Field>
+        {/* Render all user details dynamically */}
+        {[
+          { label: "Your name", fieldName: "username" },
+          { label: "Your email", fieldName: "email" },
+          { label: "Your date of birth", fieldName: "dob" },
+          { label: "Your height", fieldName: "height" },
+          { label: "Your weight", fieldName: "weight" },
+          { label: "Your phone number", fieldName: "phoneNumber" },
+        ].map(({ label, fieldName }) => (
+          <UserDetailField
+            key={fieldName}
+            label={label}
+            value={formData[fieldName]}
+            onChange={handleChange}
+            onUpdate={handleUpdate}
+            fieldName={fieldName}
+          />
+        ))}
 
         <Button as={Link} href="/loginPage" size="lg" variant="solid" width="200px" colorPalette="red" mt="20px" mb="20px">
           Log out
