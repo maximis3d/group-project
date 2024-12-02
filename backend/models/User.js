@@ -43,6 +43,15 @@ userSchema.pre("save", async function (next) {
   }
 });
 
+// Pre-save middlware to strip time from dob
+userSchema.pre("save", async function (next) {
+  if (this.dob) {
+    // Stripping the time from the 'dob' field
+    this.dob = new Date(this.dob).setHours(0, 0, 0, 0);
+  }
+  next();
+});
+
 userSchema.methods.comparePassword = async function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };

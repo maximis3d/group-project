@@ -67,23 +67,70 @@ app.post("/login", async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    if (typeof user.comparePassword !== "function") {
-      console.error("comparePassword is not defined on the user instance");
-      return res.status(500).json({ message: "Internal Server Error" });
-    }
-
     const passwordMatch = await user.comparePassword(password);
     if (!passwordMatch) {
       return res.status(401).json({ message: "Incorrect password" });
     }
 
     req.session.isAuth = true;
-    return res.status(200).json({ message: "Login successful", redirectUrl: "/dashboard" });
+    req.session.userId = user._id; // Store the user's ID in the session
+    req.session.username = user.username; // Store the username in the session
+    return res.status(200).json({ message: "Login successful" });
   } catch (error) {
     console.error("Error during login:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
+
+app.get("/user", isAuth, async (req, res) => {
+  try {
+    const user = await User.findById(req.session.userId).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    console.error("Error fetching user details:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+app.patch("/update-details", isAuth, async (req, res) => {
+  const { username, email, dob, weight, height, phoneNumber } = req.body;
+
+  try {
+    if (username) {
+      const existingUser = await User.findOne({ username });
+      if (existingUser && existingUser.username !== req.session.username) {
+        return res.status(400).json({ message: "Username already taken" });
+      }
+    }
+
+    const updatedUser = await User.findOneAndUpdate(
+      { username: req.session.username },
+      { username, email, dob, weight, height, phoneNumber },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (username) {
+      req.session.username = username;
+    }
+
+    res.status(200).json({
+      message: "Details updated successfully",
+      updatedUser,
+    });
+  } catch (error) {
+    console.error("Error updating user details:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 
 
 app.post("/register", async (req, res, next) => {
