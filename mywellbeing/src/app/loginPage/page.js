@@ -23,7 +23,8 @@ async function loginUser(formData) {
     if (!response.ok) {
       const error = await response.text();
       console.error('Login failed:', error);
-      throw new Error(`Login failed: ${error}`);
+      redirect('/loginPageFailed');
+
     }
 
     redirect('/homePage');

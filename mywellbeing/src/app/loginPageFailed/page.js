@@ -23,7 +23,8 @@ async function loginUser(formData) {
     if (!response.ok) {
       const error = await response.text();
       console.error('Login failed:', error);
-      throw new Error(`Login failed: ${error}`);
+      redirect('/loginPageFailed');
+
     }
 
     redirect('/homePage');
@@ -33,7 +34,7 @@ async function loginUser(formData) {
   }
 }
 
-export default function LoginPage() {
+export default function LoginPageFailed() {
   return (
     <Stack spacing={4} direction="column" align="center" mt="20px">
       <HStack spacing={1} className="headerContainer" align="center">
@@ -58,6 +59,8 @@ export default function LoginPage() {
       }}>
         <h1 style={{ fontWeight: "bold", fontSize:"24px" }}>Log in</h1>
 
+        <p style={{ color: "red", fontSize:"16px", marginTop: "10px"}}>Username or Password is incorrect</p>
+
         <form action={loginUser}>
           <Field label="Username" mt="20px" color="grey" >
             <Input 
@@ -65,9 +68,7 @@ export default function LoginPage() {
               placeholder="Enter your username" 
               size="md" 
               type="username"
-              errorText="This field might be incorrect"
               required
-              
             />
           </Field>
 
@@ -77,7 +78,6 @@ export default function LoginPage() {
               placeholder="Enter your password" 
               size="md" 
               type="password"
-              errorText="This field might be incorrect"
               required
             />
           </Field>

@@ -70,6 +70,18 @@ export default async function AccountPage() {
         >
           Edit Details
         </Button>
+
+        <Button 
+          as={Link} 
+          href="/loginPage" // Link to an edit page if needed
+          size="lg" 
+          variant="solid" 
+          colorPalette="red" 
+          width="200px"
+          mt="40px"
+        >
+          Edit Details
+        </Button>
       </div>
     </Stack>
   );
