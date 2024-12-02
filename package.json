@@ -15,13 +15,9 @@
     "concurrently": "^7.0.0"
   },
   "dependencies": {
-<<<<<<< HEAD
     "connect-mongodb-session": "^5.0.0",
     "cors": "^2.8.5",
     "ejs": "^3.1.10",
     "nodemon": "^3.1.7"
-=======
-    "my-wellbeing": "file:"
->>>>>>> df930d1e7e05cee30be12273151b9f00b22a02e9
   }
 }
