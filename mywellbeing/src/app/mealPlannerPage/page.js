@@ -20,15 +20,8 @@ import { VscRemove } from "react-icons/vsc"  // Add this import for remove icon
 
 
 
-import { SegmentedControl } from "@/components/ui/segmented-control"
 
-import {
-  PaginationItems,
-  PaginationNextTrigger,
-  PaginationPageText,
-  PaginationPrevTrigger,
-  PaginationRoot,
-} from "@/components/ui/pagination"
+
 
 import {
   DialogBody,
