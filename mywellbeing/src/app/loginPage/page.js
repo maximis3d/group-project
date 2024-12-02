@@ -3,9 +3,10 @@
 import { useState } from "react";
 import { Stack, HStack, Input, Button, Link } from "@chakra-ui/react";
 import Image from "next/image";
+import { handleAuthentication } from "../../scripts//authHandler"; // Import the reusable function
 
 export default function LoginPage() {
-  const [username, setusername] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -14,27 +15,17 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setErrorMessage(null);
-  
+
     try {
-      const response = await fetch("http://localhost:5000/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ username, password }),
-      });
-  
-      const result = await response.json();
-      setLoading(false);
-  
-      if (response.ok) {
-        window.location.href = "/homePage"
-      } else {
-        setErrorMessage(result.message || "An error occurred. Please try again later.");
-      }
+      const credentials = { username, password };
+      const endpoint = "http://localhost:5000/login";
+      const redirectUrl = "/homePage";
+
+      await handleAuthentication(endpoint, credentials, redirectUrl);
     } catch (error) {
+      setErrorMessage(error.message);
+    } finally {
       setLoading(false);
-      console.error("Error during login:", error);
-      setErrorMessage("An error occurred. Please try again later.");
     }
   };
 
@@ -52,7 +43,7 @@ export default function LoginPage() {
           <Input
             placeholder="Enter your username"
             value={username}
-            onChange={(e) => setusername(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
           />
           <Input
             placeholder="Enter your password"
