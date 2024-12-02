@@ -49,8 +49,19 @@ import { IconButton } from "@chakra-ui/react"
 
 
 function Home() {
-  const [oatsInFavourites, setOatsInFavourites] = useState(false);
+  const [favorites, setFavorites] = useState({
+    oatSmoothie: false,
+    bulkingBurrito: false,
+    pestoPasta: false,
+  });
 
+  
+  const toggleFavorite = (mealId) => {
+    setFavorites(prev => ({
+      ...prev,
+      [mealId]: !prev[mealId]
+    }));
+  };
   return (
     <div>
       <Center>
@@ -94,9 +105,10 @@ function Home() {
 
 
 
-{/*general*/}
-<VisuallyHidden>
-<Tabs.Content value="Favourite">
+{/*favourite*/}
+  <Tabs.Content value="Favourite">
+  {favorites.oatSmoothie && (
+
       <Card.Root maxW="sm" overflow="hidden" gap="4">
       <Image      
        height="300px"
@@ -203,9 +215,22 @@ A creamy blend of rolled oats, protein powder, Greek yogurt, and fresh fruits li
 
       </Card.Footer>
     </Card.Root>
+  )}
+ {favorites.bulkingBurrito && (
+        <Card.Root maxW="sm" overflow="hidden" gap="4">
+          {/* Burrito card content */}
+        </Card.Root>
+      )}
+
+{favorites.pestoPasta && (
+        <Card.Root maxW="sm" overflow="hidden" gap="4">
+          {/* Burrito card content */}
+        </Card.Root>
+      )}
+
     </Tabs.Content>
 
-    </VisuallyHidden>
+  
 {/* end of Favourite */}
       
 {/* Bulking */}
@@ -304,35 +329,14 @@ A creamy blend of rolled oats, protein powder, Greek yogurt, and fresh fruits li
       </DialogContent>
     </DialogRoot>
 
-
-    <Icon fontSize="2xl" color="pink.700">
-      <IconButton variant="ghost" _hover={{ boxShadow: 'none', bg: 'transparent' }}   
-      
-       
-      >// In the bulking section
-      <IconButton
-        variant="ghost"
-        _hover={{ boxShadow: 'none', bg: 'transparent' }}
-        onClick={() => {
-          // Toggle the visuallyHidden prop on the oats card in the favourite tab
-          setOatsInFavourites(!oatsInFavourites);
-        }}
-      >
-        <VscAdd />
-      </IconButton>
-      
-      // In the favourite tab
-      <Tabs.Content value="Favourite">
-        <VisuallyHidden when={!oatsInFavourites}>
-          <Card.Root maxW="sm" overflow="hidden" gap="4">
-            {/* Oats card content */}
-          </Card.Root>
-        </VisuallyHidden>
-      </Tabs.Content>
-      <VscAdd />
-       
-      </IconButton>
-  </Icon>
+    <IconButton 
+            variant="ghost" 
+            _hover={{ boxShadow: 'none', bg: 'transparent' }}
+            onClick={() => toggleFavorite('oatSmoothie')}
+          >
+            <VscAdd />
+          </IconButton>
+   
 
       </Card.Footer>
     </Card.Root>
