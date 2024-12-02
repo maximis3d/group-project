@@ -1,10 +1,20 @@
 "use client";
-
+/**
+ * Module Imports
+ */
 import { useState } from "react";
 import { Stack, HStack, Input, Button, Link } from "@chakra-ui/react";
 import Image from "next/image";
-import { handleAuthentication } from "../../scripts//authHandler"; // Import the reusable function
 
+/**
+ * Script imports
+*/
+import { handleAuthentication } from "../../scripts//authHandler"; 
+
+/**
+ * Handles login page
+ * @returns {String} Formatted Login page
+ */
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
