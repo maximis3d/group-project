@@ -10,6 +10,8 @@ const axios = require("axios");
 require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 
 const User = require("./models/User");
+const WeightLog = require('./models/weightLog');
+
 const { search } = require("./ApiApp");
 
 const app = express();
@@ -265,7 +267,39 @@ app.get("/api/search", async (req, res) => {
     console.error("Error fetching data from Nutritionix API:", error.message);
     res.status(500).json({ error: "Failed to fetch data from Nutritionix API." });
   }
-});
+})
+
+  // Add a new weight log
+  app.post("/weight-log", isAuth, async (req, res) => {
+    const { weight } = req.body;
+    if (!weight) {
+      return res.status(400).json({ message: "Weight is required" });
+    }
+    try {
+      const newLog = new WeightLog({
+        userId: req.session.userId,
+        weight,
+      });
+      await newLog.save();
+      res.status(201).json({ message: "Weight log added successfully", log: newLog });
+    } catch (error) {
+      console.error("Error adding weight log:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  });
+  
+  // Get weight logs for logged in user
+  app.get("/weight-logs", isAuth, async (req, res) => {
+    try {
+      const logs = await WeightLog.find({ userId: req.session.userId }).sort({ date: 1 });
+      res.status(200).json(logs);
+    } catch (error) {
+      console.error("Error fetching weight logs:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  });
+  
+
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
