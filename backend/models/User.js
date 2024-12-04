@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
     match: [/[^a-zA-Z0-9]/, "Password must contain at least one special character"],
   },
   age: { type: Number, required: true },
-  dob: { type: Date, required: true },
+  dob: { type: String, required: true },
   weight: { type: Number, required: true },
   height: { type: Number, required: true },
   gender: { type: String, required: true },
@@ -43,14 +43,6 @@ userSchema.pre("save", async function (next) {
   }
 });
 
-// Pre-save middlware to strip time from dob
-userSchema.pre("save", async function (next) {
-  if (this.dob) {
-    // Stripping the time from the 'dob' field
-    this.dob = new Date(this.dob).setHours(0, 0, 0, 0);
-  }
-  next();
-});
 
 userSchema.methods.comparePassword = async function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
