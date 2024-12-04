@@ -10,6 +10,7 @@ const axios = require("axios");
 require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 
 const User = require("./models/User");
+const { search } = require("./ApiApp");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -226,7 +227,7 @@ app.get("/api/search", async (req, res) => {
     const foods = searchResponse.data.branded || [];
 
     // Limit the number of nutrient requests to prevent excessive API calls
-    const limitedFoods = foods.slice(0, 10);
+    const limitedFoods = foods.slice(0, 5);
 
     // Step 2: For each food item, fetch nutrient data
     const nutrientPromises = limitedFoods.map(async (food) => {
