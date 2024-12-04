@@ -1,3 +1,4 @@
+// server.js
 const express = require("express");
 const session = require("express-session");
 const mongoose = require("mongoose");
@@ -5,7 +6,8 @@ const MongoDBSession = require("connect-mongodb-session")(session);
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const path = require("path");
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+const axios = require("axios");
+require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 
 const User = require("./models/User");
 
@@ -13,12 +15,14 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI, {
-}).then(() => {
-  console.log("MongoDB Connected");
-}).catch(err => {
-  console.error("MongoDB connection error:", err);
-});
+mongoose
+  .connect(process.env.MONGODB_URI, {})
+  .then(() => {
+    console.log("MongoDB Connected");
+  })
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+  });
 
 // MongoDB Session Store
 const store = new MongoDBSession({
@@ -27,22 +31,26 @@ const store = new MongoDBSession({
 });
 
 // Session Middleware
-app.use(session({
-  secret: "key that will sign cookie",
-  resave: false,
-  saveUninitialized: false,
-  store: store,
-  cookie: {
-    httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000, // 1 day
-  },
-}));
+app.use(
+  session({
+    secret: "key that will sign cookie",
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+    cookie: {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    },
+  })
+);
 
 // CORS Configuration
-app.use(cors({
-  origin: process.env.CLIENT_URL || "http://localhost:3000",
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 // Body Parsers
 app.use(express.json());
@@ -56,7 +64,6 @@ const isAuth = (req, res, next) => {
     res.status(401).json({ message: "Unauthorized" });
   }
 };
-
 // Routes
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
@@ -191,8 +198,75 @@ app.get("/validate-session", (req, res) => {
   }
 });
 
-// Start Server
+// Nutrition Route
+app.get("/api/search", async (req, res) => {
+  const APP_ID = process.env.API_ID;
+  const API_KEY = process.env.API_KEY;
+  const BASE_URL = "https://trackapi.nutritionix.com/v2";
+  const { query } = req.query;
+
+  if (!query) {
+    return res.status(400).json({ error: "Query parameter is required." });
+  }
+
+  try {
+    // Step 1: Search for foods based on the query
+    const searchResponse = await axios.get(`${BASE_URL}/search/instant`, {
+      params: { query },
+      headers: {
+        "x-app-id": APP_ID,
+        "x-app-key": API_KEY,
+        "Content-Type": "application/json"
+      },
+    });
+
+    console.log("Search query:", query);
+    console.log("Search response data:", searchResponse.data);
+
+    const foods = searchResponse.data.branded || [];
+
+    // Limit the number of nutrient requests to prevent excessive API calls
+    const limitedFoods = foods.slice(0, 10);
+
+    // Step 2: For each food item, fetch nutrient data
+    const nutrientPromises = limitedFoods.map(async (food) => {
+      try {
+        const nutrientResponse = await axios.post(
+          `${BASE_URL}/natural/nutrients`,
+          { query: food.food_name },
+          {
+            headers: {
+              "x-app-id": APP_ID,
+              "x-app-key": API_KEY,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        return { ...food, nutrients: nutrientResponse.data };
+      } catch (err) {
+        console.error(
+          `Error fetching nutrients for ${food.food_name}:`,
+          err.message
+        );
+        return { ...food, nutrients: null };
+      }
+    });
+
+    const foodsWithNutrients = await Promise.all(nutrientPromises);
+
+    res.json({
+      query,
+      results: foodsWithNutrients,
+    });
+  } catch (error) {
+    console.error("Error fetching data from Nutritionix API:", error.message);
+    res.status(500).json({ error: "Failed to fetch data from Nutritionix API." });
+  }
+});
+
+// Existing Routes (e.g., /login, /register, etc.)
+// Keep the other routes (like /login, /register, etc.) as they are in your server.js file
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
-  console.log("testusermax123")
 });
