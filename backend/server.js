@@ -183,6 +183,9 @@ app.post("/logout", (req, res) => {
       console.error("Error during logout:", err);
       return res.status(500).json({ message: "Logout failed" });
     }
+    res.clearCookie("connect.sid", {
+      httpOnly: true
+    })
     res.status(200).json({ message: "Logout successful" });
   });
 });
@@ -228,7 +231,6 @@ app.get("/api/search", async (req, res) => {
 
     // Limit the number of nutrient requests to prevent excessive API calls
     const limitedFoods = foods.slice(0, 5);
-
     // Step 2: For each food item, fetch nutrient data
     const nutrientPromises = limitedFoods.map(async (food) => {
       try {
@@ -264,9 +266,6 @@ app.get("/api/search", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch data from Nutritionix API." });
   }
 });
-
-// Existing Routes (e.g., /login, /register, etc.)
-// Keep the other routes (like /login, /register, etc.) as they are in your server.js file
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
