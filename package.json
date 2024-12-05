@@ -7,7 +7,7 @@
     "mywellbeing"
   ],
   "scripts": {
-    "dev": "concurrently \"nodemon backend/server\" \"npm run dev --workspace mywellbeing --silent\"",
+    "dev": "concurrently \"nodemon backend/server --silent\" \"npm run dev --workspace mywellbeing --silent\"",
     "start": "npm run dev",
     "test": "jest"
   },
