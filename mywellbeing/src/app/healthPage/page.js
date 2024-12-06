@@ -42,6 +42,7 @@ export default function HealthPage() {
         <Image
           height="200px"
           src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Smiley.svg/330px-Smiley.svg.png"
+          alt="Smiley Face"
         />
         <Slider width="100px" defaultValue={[40]} />
         <Button>Submit</Button>
