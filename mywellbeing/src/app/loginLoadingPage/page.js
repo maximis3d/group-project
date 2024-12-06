@@ -4,7 +4,7 @@ import { Link, Text, Button, HStack, Stack } from "@chakra-ui/react";
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-export default function loginLoadingPage() {
+export default function LoginLoadingPage() {
   const router = useRouter();
 
   useEffect(() => {
