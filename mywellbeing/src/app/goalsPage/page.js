@@ -77,6 +77,8 @@ export default function GoalsPage() {
       <div style={{ textAlign: "center", marginTop: "40px", width: "300px" }}>
         {/* Label and Input fields */}
         <div style={{ marginBottom: "16px" }}>
+
+          <br />
           <label htmlFor="weight" style={{ fontSize: "16px", fontWeight: "bold", color: "gray" }}>
             Add New Weight
           </label>

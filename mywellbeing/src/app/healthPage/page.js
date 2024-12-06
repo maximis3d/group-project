@@ -24,7 +24,7 @@ export default function HealthPage() {
         </Link>
       </HStack>
       {/*****************************************Header Section End*****************************************/}
-      
+
       {/* Body Section */}
       <div
         className="bodyContainer"
