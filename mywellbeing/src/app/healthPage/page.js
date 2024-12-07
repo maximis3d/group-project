@@ -1,8 +1,20 @@
+"use client"
+import React from 'react';  // Add this import
 import { Link, Button, HStack, Stack, Image } from "@chakra-ui/react";
 import { Slider } from "@/components/ui/slider";
 import LineChartComponent from "./linechart";  // Import the chart component
+import ChartMood from "./goalMood";
+import MoodSlider from "./healthslider";
 
 export default function HealthPage() {
+  const chartRef = React.useRef();
+
+  const handleMoodSubmit = (moodValue) => {
+    if (chartRef.current) {
+      chartRef.current.updateSundayMood(moodValue);
+    }
+  };
+
   return (
     <Stack spacing={4} direction="column" align="center" mt="20px">
       {/*****************************************Start of header*****************************************/}
@@ -25,30 +37,29 @@ export default function HealthPage() {
       </HStack>
       {/*****************************************Header Section End*****************************************/}
       
-      {/* Body Section */}
+      
+        <ChartMood ref={chartRef} />
+        
       <div
         className="bodyContainer"
         style={{
           display: "flex",
           flexDirection: "column",
-          alignItems: "flex-start",
-          justifyContent: "flex-start",
-          width: "300px",
-          height: "100px",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          maxWidth: "800px",
+          minHeight: "200px",
           textAlign: "center",
-          marginTop: "40px"
+          marginTop: "10px",
+          padding: "0 10px"
         }}
       >
-        <Image
-          height="200px"
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Smiley.svg/330px-Smiley.svg.png"
-        />
-        <Slider width="100px" defaultValue={[40]} />
-        <Button>Submit</Button>
+        <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+          <MoodSlider onMoodSubmit={handleMoodSubmit} />
+        </div>
       </div>
 
-      {/* Render the LineChartComponent here */}
-      <LineChartComponent />
 
       {/*****************************************Main Body Section End*****************************************/}
     </Stack>
