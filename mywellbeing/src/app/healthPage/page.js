@@ -1,10 +1,20 @@
+"use client"
+import React from 'react';  // Add this import
 import { Link, Button, HStack, Stack, Image } from "@chakra-ui/react";
 import { Slider } from "@/components/ui/slider";
 import LineChartComponent from "./linechart";  // Import the chart component
-import ChartGoal from "./goalChart";
+import ChartMood from "./goalMood";
 import MoodSlider from "./healthslider";
 
 export default function HealthPage() {
+  const chartRef = React.useRef();
+
+  const handleMoodSubmit = (moodValue) => {
+    if (chartRef.current) {
+      chartRef.current.updateSundayMood(moodValue);
+    }
+  };
+
   return (
     <Stack spacing={4} direction="column" align="center" mt="20px">
       {/*****************************************Start of header*****************************************/}
@@ -28,7 +38,7 @@ export default function HealthPage() {
       {/*****************************************Header Section End*****************************************/}
       
       
-        <ChartGoal />
+        <ChartMood ref={chartRef} />
         
       <div
         className="bodyContainer"
@@ -41,12 +51,12 @@ export default function HealthPage() {
           maxWidth: "800px",
           minHeight: "200px",
           textAlign: "center",
-          marginTop: "100px",
-          padding: "0 50px"
+          marginTop: "10px",
+          padding: "0 10px"
         }}
       >
         <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-          <MoodSlider />
+          <MoodSlider onMoodSubmit={handleMoodSubmit} />
         </div>
       </div>
 

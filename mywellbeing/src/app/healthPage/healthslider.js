@@ -7,7 +7,7 @@ import { Slider } from "@/components/ui/slider"
 import { Controller, useForm } from "react-hook-form"
 import { CiFaceSmile, CiFaceMeh, CiFaceFrown } from "react-icons/ci"
 
-const MoodSlider = () => {
+const MoodSlider = ({ onMoodSubmit }) => {
   const {
     control,
     handleSubmit,
@@ -16,7 +16,10 @@ const MoodSlider = () => {
     defaultValues: { value: [40] },
   })
 
-  const onSubmit = handleSubmit((data) => console.log(data))
+  const onSubmit = handleSubmit((data) => {
+    console.log(data)
+    onMoodSubmit(data.value[0])
+  })
 
   // Function to determine which face to show
   const getFaceIcon = (value) => {
