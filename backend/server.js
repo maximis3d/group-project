@@ -4,18 +4,24 @@ const session = require("express-session");
 const mongoose = require("mongoose");
 const MongoDBSession = require("connect-mongodb-session")(session);
 const cors = require("cors");
-const bcrypt = require("bcrypt");
 const path = require("path");
 const axios = require("axios");
 require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 
 const User = require("./models/User");
-const WeightLog = require('./models/weightLog');
+const WeightLog = require("./models/weightLog");
+const SavedFood = require("./models/savedFood")
 
 const { search } = require("./ApiApp");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+/**
+ * Helper Functions
+ */
+
+const validateFields = (fields) => Object.values(fields).every(value => value !== undefined && value !== null);
 
 // MongoDB Connection
 mongoose
@@ -140,8 +146,6 @@ app.patch("/update-details", isAuth, async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
-
-
 
 app.post("/register", async (req, res, next) => {
   const {
@@ -269,36 +273,62 @@ app.get("/api/search", async (req, res) => {
   }
 })
 
-  // Add a new weight log
-  app.post("/weight-log", isAuth, async (req, res) => {
-    const { weight } = req.body;
-    if (!weight) {
-      return res.status(400).json({ message: "Weight is required" });
-    }
-    try {
-      const newLog = new WeightLog({
-        userId: req.session.userId,
-        weight,
-      });
-      await newLog.save();
-      res.status(201).json({ message: "Weight log added successfully", log: newLog });
-    } catch (error) {
-      console.error("Error adding weight log:", error);
-      res.status(500).json({ message: "Internal Server Error" });
-    }
-  });
+// Add a new weight log
+app.post("/weight-log", isAuth, async (req, res) => {
+  const { weight } = req.body;
+  if (!weight) {
+    return res.status(400).json({ message: "Weight is required" });
+  }
+  try {
+    const newLog = new WeightLog({
+      userId: req.session.userId,
+      weight,
+    });
+    await newLog.save();
+    res.status(201).json({ message: "Weight log added successfully", log: newLog });
+  } catch (error) {
+    console.error("Error adding weight log:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+// Get weight logs for logged in user
+app.get("/weight-logs", isAuth, async (req, res) => {
+  try {
+    const logs = await WeightLog.find({ userId: req.session.userId }).sort({ date: 1 });
+    res.status(200).json(logs);
+  } catch (error) {
+    console.error("Error fetching weight logs:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+
+app.post("/save-food", isAuth, async (req, rest) => {
+  const {foodName, calories, protein, fat, carbs} = req.body
+
+  if(!validateFields({ foodName, calories, protein, fat, carbs})){
+    return res.status(400).json({message: "All food details are required"})
+  }
+
+  try{
+    const newSavedFood = new SavedFood({
+      userId: req.session.userId,
+      foodName,
+      calories,
+      protein,
+      fat,
+      carbs
+    })
+
+    await newSavedFood.save()
+    res.status(201).json({message: "Food item saved succesfully", food: newSavedFood})
+  } catch (error){
+    console.error("Error saving fod item", error)
+    res.status(500).json({message: "Internal Server Error"})
+  }
   
-  // Get weight logs for logged in user
-  app.get("/weight-logs", isAuth, async (req, res) => {
-    try {
-      const logs = await WeightLog.find({ userId: req.session.userId }).sort({ date: 1 });
-      res.status(200).json(logs);
-    } catch (error) {
-      console.error("Error fetching weight logs:", error);
-      res.status(500).json({ message: "Internal Server Error" });
-    }
-  });
-  
+})
 
 
 app.listen(PORT, () => {
