@@ -304,7 +304,7 @@ app.get("/weight-logs", isAuth, async (req, res) => {
 });
 
 // Save selected food to database with nurtional details
-app.post("/save-food", isAuth, async (req, rest) => {
+app.post("/save-food", isAuth, async (req, res) => {
   const { foodName, calories, protein, fat, carbs } = req.body
 
   if (!validateFields({ foodName, calories, protein, fat, carbs })) {
