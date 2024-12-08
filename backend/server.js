@@ -303,15 +303,15 @@ app.get("/weight-logs", isAuth, async (req, res) => {
   }
 });
 
-
+// Save selected food to database with nurtional details
 app.post("/save-food", isAuth, async (req, rest) => {
-  const {foodName, calories, protein, fat, carbs} = req.body
+  const { foodName, calories, protein, fat, carbs } = req.body
 
-  if(!validateFields({ foodName, calories, protein, fat, carbs})){
-    return res.status(400).json({message: "All food details are required"})
+  if (!validateFields({ foodName, calories, protein, fat, carbs })) {
+    return res.status(400).json({ message: "All food details are required" })
   }
 
-  try{
+  try {
     const newSavedFood = new SavedFood({
       userId: req.session.userId,
       foodName,
@@ -322,14 +322,25 @@ app.post("/save-food", isAuth, async (req, rest) => {
     })
 
     await newSavedFood.save()
-    res.status(201).json({message: "Food item saved succesfully", food: newSavedFood})
-  } catch (error){
+    res.status(201).json({ message: "Food item saved succesfully", food: newSavedFood })
+  } catch (error) {
     console.error("Error saving fod item", error)
-    res.status(500).json({message: "Internal Server Error"})
+    res.status(500).json({ message: "Internal Server Error" })
   }
-  
+
 })
 
+// Retireve saved food items
+app.get("/get-saved-foods", isAuth, async (req, res) => {
+  try {
+    const savedFoods = await SavedFood.find({ userId: req.session.userId }).sort({
+      dateadded: -1
+    })
+  } catch (error) {
+    console.error("Error fetching saved foods: ", error);
+    res.status(500).json({ message: "Internal Server Error" })
+  }
+})
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
