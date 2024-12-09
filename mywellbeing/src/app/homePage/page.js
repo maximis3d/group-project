@@ -70,23 +70,12 @@ export default function HomePage() {
         </SelectRoot>
 
       <h1 style={{ fontWeight: "bold", fontSize: "24px",marginTop: "20px", marginBottom:"0px" }}>Overall progress</h1>
-      <Box style={{
-              padding: '15px',
-              borderRadius: '10px',
-              width: '100%', 
-              maxWidth: '550px', 
-              marginTop: '10px',
-              alignSelf: 'center', 
-              display: 'flex',
-              flexDirection: 'column', 
-              alignItems: 'center',
-              textAlign: 'center',
-              border: '2px solid teal',
-          }}>
-
+      
+      
+      <Box width="400px" height="2px" backgroundColor="teal" marginTop="5px 0" />
         <HomeChart />
-
-      </Box>
+      
+      <Box width="400px" height="2px" backgroundColor="teal" marginTop="0px 0" />
 
 
       {/*****************************************End of header section*****************************************/}
@@ -102,7 +91,7 @@ export default function HomePage() {
               padding: '15px',
               borderRadius: '10px',
               width: '100%', 
-              maxWidth: '550px', 
+              maxWidth: '500px', 
               marginTop: '10px',
               alignSelf: 'center', 
               display: 'flex',

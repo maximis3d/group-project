@@ -39,7 +39,7 @@ export default class HomeChart extends PureComponent {
         justifyContent: "flex-start",
         width: "300px",
         textAlign: "left",
-        marginTop: "40px",
+        marginTop: "20px",
       }}>
 
 
