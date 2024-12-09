@@ -1,10 +1,7 @@
-
-import { Link, HStack, Stack } from "@chakra-ui/react";
+import { Link, HStack, Stack, Box, Text } from "@chakra-ui/react";
 import Image from 'next/image';
 import { ProgressRoot, ProgressBar, ProgressValueText } from "@/components/ui/progress";
 import HomeChart from "./homePieChart";
-
-
 
 import {
   SelectContent,
@@ -28,53 +25,37 @@ const calendarToggle = [
   { label: "3 days ago", value: "3 days ago" },
 ];
 
-
-
 export default function HomePage() {
   return (
-    <Stack spacing={4} direction="column" align="center" mt="20px">
+    <Stack spacing={4} direction="column" align="center" mt="5px" p={{ base: 4, md: 8 }} maxW="1200px" mx="auto">
       {/*****************************************Start of header*****************************************/}
-      <HStack spacing={4} className="headerContainer" align="center">
+      <HStack spacing={4} className="headerContainer" align="center" wrap="wrap" justify="center">
         <Link href="/homePage" mt="10px" color="teal">
-          <p style={{ fontSize: '18px', padding: '0 8px' }}>Home</p>
+          <Text fontSize={{ base: '16px', md: '18px' }} padding="0 8px">Home</Text>
         </Link>
         <Link href="/mealPlannerPage" mt="10px" color="teal">
-          <p style={{ fontSize: '18px', padding: '0 8px' }}>Meals</p>
+          <Text fontSize={{ base: '16px', md: '18px' }} padding="0 8px">Meals</Text>
         </Link>
         <Link href="/healthPage" mt="10px" color="teal">
-          <p style={{ fontSize: '18px', padding: '0 8px' }}>Health</p>
+          <Text fontSize={{ base: '16px', md: '18px' }} padding="0 8px">Health</Text>
         </Link>
         <Link href="/goalsPage" mt="10px" color="teal">
-          <p style={{ fontSize: '18px', padding: '0 8px' }}>Goals</p>
+          <Text fontSize={{ base: '16px', md: '18px' }} padding="0 8px">Goals</Text>
         </Link>
         <Link href="/accountPage" mt="10px" color="teal">
-          <p style={{ fontSize: '18px', padding: '0 8px' }}>Account</p>
+          <Text fontSize={{ base: '16px', md: '18px' }} padding="0 8px">Account</Text>
         </Link>
         <Link href="/addFoods" mt="10px" color="teal">
-          <p style={{ fontSize: '18px', padding: '0 8px' }}>Add Foods</p>
+          <Text fontSize={{ base: '16px', md: '18px' }} padding="0 8px">Add Foods</Text>
         </Link>
-      </HStack>      
-      <HomeChart />
+      </HStack>     
+      
+
+    
+      <Box width="100%" height="2px" backgroundColor="teal" margin="16px 0" />
 
 
-      {/* Custom divider */}
-      <div style={{ width: "360px", height: "2px", backgroundColor: "teal", margin: "16px 0" }} />
-      {/*****************************************End of header section*****************************************/}
-  
-
-
-      {/*****************************************Start of main body section*****************************************/}
-      <div className="bodyContainer" style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",
-        justifyContent: "flex-start",
-        width: "300px",
-        textAlign: "left",
-        marginTop: "40px",
-      }}>
-        {/* Select Component */}
-        <SelectRoot size="sm" style={{ width: '200px', marginBottom: "10px" }}>
+      <SelectRoot size="sm" style={{ width: '100%', maxWidth: '300px', marginBottom: "10px" }}>
           <SelectLabel color="grey">Date</SelectLabel>
           <SelectTrigger>
             <SelectValueText placeholder="Choose a date" color="grey"/>
@@ -88,87 +69,110 @@ export default function HomePage() {
           </SelectContent>
         </SelectRoot>
 
+      <h1 style={{ fontWeight: "bold", fontSize: "24px",marginTop: "20px", marginBottom:"0px" }}>Overall progress</h1>
+      <Box style={{
+              padding: '15px',
+              borderRadius: '10px',
+              width: '100%', 
+              maxWidth: '550px', 
+              marginTop: '10px',
+              alignSelf: 'center', 
+              display: 'flex',
+              flexDirection: 'column', 
+              alignItems: 'center',
+              textAlign: 'center',
+              border: '2px solid teal',
+          }}>
 
-      
+        <HomeChart />
+
+      </Box>
 
 
-        <h1 style={{ fontWeight: "bold", fontSize: "24px", marginTop:"20px" }}>More detail</h1>
-        <HStack spacing={4} className="bottomContainer" align="flex-start" width="325px" justify="flex-start">
-        <div style={{
-            backgroundColor: 'var(--div-background)', // CSS variable changes based on system color scheme
-            padding: '15px',
-            borderRadius: '10px',
-            width: '550px',
-            marginTop: '10px',
-            alignSelf: 'flex-start'
-        }}>
-            
+      {/*****************************************End of header section*****************************************/}
+  
+      {/*****************************************Start of main body section*****************************************/}
+      <Box className="bodyContainer" display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" width="100%" textAlign="center" mt="40px">
+        {/* Select Component */}
+        
 
+        <Text fontWeight="bold" fontSize="24px" mt="20px">More detail</Text>
+        <HStack spacing={4} className="bottomContainer" align="flex-start" width="100%" textAlign="center" justify="center" wrap="wrap">
+          <Box style={{
+              padding: '15px',
+              borderRadius: '10px',
+              width: '100%', 
+              maxWidth: '550px', 
+              marginTop: '10px',
+              alignSelf: 'center', 
+              display: 'flex',
+              flexDirection: 'column', 
+              alignItems: 'center',
+              textAlign: 'center',
+              border: '2px solid teal',
+          }}>
             {/* Vitamin A */}
-            <StatRoot maxW="240px">
+            <StatRoot maxW="240px" display="flex" flexDirection="column" alignItems="center">
               <div style={{ display: 'flex', flexDirection: 'column', marginTop: '5px' }}>
-                <span style={{ fontSize: '20px', color: '#0e8d78', fontWeight: 'bold' }}>Vitamin A</span>
+                <span style={{ fontSize: '20px', color: '#0e8d78', fontWeight: 'bold' }}>Protein</span>
                 <div style={{ display: 'flex', alignItems: 'baseline', marginTop: '4px' }}>
                   <StatValueText value={740} color="teal.600" fontSize="18px" formatOptions={{ style: "decimal", maximumFractionDigits: 0 }} />
                   <span style={{ fontSize: '16px', color: 'grey', marginLeft: '2px' }}>out of 1,620</span>
                 </div>
               </div>
               <StatHelpText color="gray.500" mb="2">+2% from last week</StatHelpText>
-              <ProgressRoot width="300px">
+              <ProgressRoot width="240px" maxWidth="300px">
                 <ProgressBar />
               </ProgressRoot>
             </StatRoot>
 
             {/* Vitamin B */}
-            <StatRoot maxW="240px">
+            <StatRoot maxW="240px" display="flex" flexDirection="column" alignItems="center">
               <div style={{ display: 'flex', flexDirection: 'column', marginTop: '25px' }}>
-                <span style={{ fontSize: '20px', color: '#0e8d78', fontWeight: 'bold' }}>Vitamin B</span>
+                <span style={{ fontSize: '20px', color: '#0e8d78', fontWeight: 'bold' }}>Calories</span>
                 <div style={{ display: 'flex', alignItems: 'baseline', marginTop: '2px' }}>
                   <StatValueText value={1540} color="teal.600" fontSize="18px" formatOptions={{ style: "decimal", maximumFractionDigits: 0 }} />
                   <span style={{ fontSize: '16px', color: 'grey', marginLeft: '4px' }}>out of 3,000</span>
                 </div>
               </div>
               <StatHelpText color="gray.500" mb="2">+22% from last week</StatHelpText>
-              <ProgressRoot width="300px">
+              <ProgressRoot width="240px" maxWidth="300px">
                 <ProgressBar />
               </ProgressRoot>
             </StatRoot>
 
             {/* Vitamin C */}
-            <StatRoot maxW="240px">
+            <StatRoot maxW="240px" display="flex" flexDirection="column" alignItems="center">
               <div style={{ display: 'flex', flexDirection: 'column', marginTop: '25px' }}>
-                <span style={{ fontSize: '20px', color: '#0e8d78', fontWeight: 'bold' }}>Vitamin C</span>
+                <span style={{ fontSize: '20px', color: '#0e8d78', fontWeight: 'bold' }}>Carbs</span>
                 <div style={{ display: 'flex', alignItems: 'baseline', marginTop: '2px' }}>
                   <StatValueText value={2340} color="teal.600" fontSize="18px" formatOptions={{ style: "decimal", maximumFractionDigits: 0 }} />
                   <span style={{ fontSize: '16px', color: 'grey', marginLeft: '4px' }}>out of 2,517</span>
                 </div>
               </div>
               <StatHelpText color="gray.500" mb="2">+6% from last week</StatHelpText>
-              <ProgressRoot width="300px">
+              <ProgressRoot width="240px" maxWidth="300px">
                 <ProgressBar />
               </ProgressRoot>
             </StatRoot>
 
-
             {/* Vitamin D */}
-            <StatRoot maxW="240px">
+            <StatRoot maxW="240px" display="flex" flexDirection="column" alignItems="center">
               <div style={{ display: 'flex', flexDirection: 'column', marginTop: '25px' }}>
-                <span style={{ fontSize: '20px', color: '#0e8d78', fontWeight: 'bold' }}>Vitamin D</span>
+                <span style={{ fontSize: '20px', color: '#0e8d78', fontWeight: 'bold' }}>Fats</span>
                 <div style={{ display: 'flex', alignItems: 'baseline', marginTop: '2px' }}>
                   <StatValueText value={340} color="teal.600" fontSize="18px" formatOptions={{ style: "decimal", maximumFractionDigits: 0 }} />
                   <span style={{ fontSize: '16px', color: 'grey', marginLeft: '4px' }}>out of 4,610</span>
                 </div>
               </div>
               <StatHelpText color="gray.500" mb="2">+6% from last week</StatHelpText>
-              <ProgressRoot width="300px">
+              <ProgressRoot width="240px" maxWidth="300px">
                 <ProgressBar />
               </ProgressRoot>
             </StatRoot>
-
-
-          </div>
+          </Box>
         </HStack>
-      </div>
+      </Box>
       {/*****************************************End of main body section*****************************************/}
     </Stack>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { Stack, HStack, Link,} from "@chakra-ui/react"
+import { Stack, HStack, Link, Box} from "@chakra-ui/react"
 
 import { useState } from 'react';
 
@@ -74,22 +74,28 @@ function Home() {
       <Center>
       <Stack gap = "4">
 
-      <HStack spacing={4} className="headerContainer" align="center">
+      <HStack spacing={4} className="headerContainer" align="center" wrap="wrap" justify="center">
         <Link href="/homePage" mt="10px" color="teal">
-          <p style={{ fontSize: '20px', padding: '0 15px' }}>Home</p>
+          <Text fontSize={{ base: '16px', md: '18px' }} padding="0 8px">Home</Text>
         </Link>
         <Link href="/mealPlannerPage" mt="10px" color="teal">
-          <p style={{ fontSize: '20px', padding: '0 15px' }}>Meals</p>
+          <Text fontSize={{ base: '16px', md: '18px' }} padding="0 8px">Meals</Text>
         </Link>
         <Link href="/healthPage" mt="10px" color="teal">
-          <p style={{ fontSize: '20px', padding: '0 15px' }}>Health</p>
+          <Text fontSize={{ base: '16px', md: '18px' }} padding="0 8px">Health</Text>
+        </Link>
+        <Link href="/goalsPage" mt="10px" color="teal">
+          <Text fontSize={{ base: '16px', md: '18px' }} padding="0 8px">Goals</Text>
         </Link>
         <Link href="/accountPage" mt="10px" color="teal">
-          <p style={{ fontSize: '20px', padding: '0 15px' }}>Account</p>
+          <Text fontSize={{ base: '16px', md: '18px' }} padding="0 8px">Account</Text>
         </Link>
-      </HStack>
+        <Link href="/addFoods" mt="10px" color="teal">
+          <Text fontSize={{ base: '16px', md: '18px' }} padding="0 8px">Add Foods</Text>
+        </Link>
+      </HStack> 
         
-      <div style={{ width: "400px", height: "2px", backgroundColor: "teal", margin: "3px 0" }} />
+      <Box width="100%" height="2px" backgroundColor="teal" margin="16px 0" />
 
 {/*tabs*/}
       <Tabs.Root defaultValue="Bulking" size="lg">

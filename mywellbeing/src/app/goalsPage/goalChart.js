@@ -5,13 +5,10 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 
 // Sample data for the chart
 const data = [
-  { name: 'Monday', Weight: 65},
-  { name: 'Tuesday', Weight: 70},
-  { name: 'Wednesday', Weight: 73},
-  { name: 'Thursday', Weight: 78},
-  { name: 'Friday', Weight: 83},
-  { name: 'Saturday', Weight: 85 },
-  { name: 'Sunday', Weight: 88,},
+  { name: 'Week 1', Weight: 65},
+  { name: 'Week 2', Weight: 70},
+  { name: 'Week 3', Weight: 73},
+  { name: 'Week 4', Weight: 78},
 ];
 
 export default class ChartGoal extends PureComponent {
@@ -22,7 +19,7 @@ export default class ChartGoal extends PureComponent {
         <ResponsiveContainer width="100%" height="100%">
 
           
-        <h1 style={{ fontWeight: "bold", fontSize: "24px", marginBottom:"20px", marginTop:"20px" }}>Overall Progress</h1>
+        <h1 style={{ fontWeight: "bold", fontSize: "24px", marginBottom:"20px", marginTop:"20px" }}>Your progress</h1>
         
           <LineChart data={data} margin={{ top: 0, right: 30, left: 20, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />

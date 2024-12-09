@@ -92,9 +92,11 @@ const MoodSlider = ({ onMoodSubmit }) => {
             )}
           />
 
-          <Button size="sm" type="submit">
+          <Button size="lg" variant="solid" colorPalette="teal" width="100px" marginTop= "0px" type="submit">
             Submit
           </Button>
+
+
         </Stack>
       </form>
     </Box>

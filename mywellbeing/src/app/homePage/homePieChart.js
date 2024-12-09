@@ -20,7 +20,7 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 function renderCustomLabel({ name, value, x, y }) {
   return (
-    <text x={x} y={y} fill="#333" textAnchor="middle" dominantBaseline="central">
+    <text x={x} y={y} fill="TEAL" textAnchor="middle" dominantBaseline="central">
       {`${name}: ${value}`}
     </text>
   );
@@ -42,11 +42,11 @@ export default class HomeChart extends PureComponent {
         marginTop: "40px",
       }}>
 
-<h1 style={{ fontWeight: "bold", fontSize: "24px", marginBottom:"20px" }}>Overall progress</h1>
+
       <PieChart width={600} height={300} onMouseEnter={this.onPieEnter}>
         <Pie
           data={data}
-          cx={120}
+          cx={140}
           cy={100}
           innerRadius={60}
           outerRadius={80}
