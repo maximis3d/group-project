@@ -10,7 +10,8 @@ require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 
 const User = require("./models/User");
 const WeightLog = require("./models/weightLog");
-const SavedFood = require("./models/savedFood")
+const SavedFood = require("./models/savedFood");
+const { error } = require("console");
 
 
 const app = express();
@@ -342,6 +343,32 @@ app.get("/get-saved-foods", isAuth, async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
+
+app.delete("/delete-saved-food/:id", isAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({ message: "Food ID is required" });
+    }
+
+    const deletedFood = await SavedFood.findOneAndDelete({
+      _id: id,
+      userId: req.session.userId,
+    });
+
+    if (!deletedFood) {
+      return res.status(404).json({ message: "Food not found" });
+    }
+
+    res.status(200).json({ message: "Food successfully deleted" });
+  } catch (error) {
+    console.error("Error deleting saved food:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

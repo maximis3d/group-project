@@ -19,14 +19,33 @@ export default function AddFoodsPage() {
   const fetchSavedFoods = async () => {
     try {
       const response = await axios.get("http://localhost:5000/get-saved-foods", {
-        withCredentials: true, 
+        withCredentials: true,
       });
-      setSavedFoods(response.data); 
+      setSavedFoods(response.data);
     } catch (error) {
       console.error("Error fetching saved foods:", error);
+      alert(error.response.data)
     }
   }
-  
+
+  /**
+   * Delete saved from the database
+   * @param {String} foodId Id of food being deleted from the database  
+   */
+  const deleteSavedFood = async (foodId) => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/delete-saved-food/${foodId}`, {
+        withCredentials: true,
+      });
+
+      alert(response.data.message);
+
+      setSavedFoods((prevFoods) => prevFoods.filter((food) => food._id !== foodId));
+    } catch (error) {
+      console.error("Error deleting saved food:", error);
+      alert(error.response.data.message)
+    }
+  };
 
   useEffect(() => {
     fetchSavedFoods();
@@ -66,13 +85,13 @@ export default function AddFoodsPage() {
 
   const saveFood = async (food) => {
     try {
-      
       const {
         nf_calories = 0,
         nf_protein = 0,
         nf_total_fat = 0,
         nf_total_carbohydrate = 0,
       } = food.nutrients?.foods?.[0] || {};
+  
       const body = {
         foodName: food.food_name || "Unknown Food",
         calories: nf_calories,
@@ -81,29 +100,32 @@ export default function AddFoodsPage() {
         carbs: nf_total_carbohydrate,
       };
   
-      const response = await fetch("http://localhost:5000/save-food", {
-        method: "POST",
+      const response = await axios.post("http://localhost:5000/save-food", body, {
+        withCredentials: true, 
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(body),
-        credentials: "include",
       });
   
-      const result = await response.json();
-  
-      if (response.ok) {
-        alert(result.message);
-      } else {
-        console.error("Error saving food:", result);
-        alert(result.message || "Failed to save the food item. Please try again.");
-      }
+      // Handle success response
+      alert(response.data.message);
     } catch (error) {
       console.error("Error saving food:", error);
-      alert("An unexpected error occurred. Please try again.");
+  
+      if (error.response) {
+        // Server responded with a status code other than 2xx
+        alert(error.response.data.message || "Failed to save the food item. Please try again.");
+      } else if (error.request) {
+        // Request was made but no response received
+        alert("No response from the server. Please try again.");
+      } else {
+        // Other errors
+        alert("An unexpected error occurred. Please try again.");
+      }
     }
   };
   
+
 
 
   return (
@@ -195,17 +217,26 @@ export default function AddFoodsPage() {
         <Heading pt="20px">Saved Foods</Heading>
         {savedFoods.length > 0 ? (
           <DataListRoot>
-            {savedFoods.map((food, index) => (
+            {savedFoods.map((food) => (
               <DataListItem
-                key={index}
+                key={food._id}
                 label={<strong>{food.foodName}</strong>}
-                value={`Calories: ${food.calories}, Protein: ${food.protein}, Fat: ${food.fat}, Carbs: ${food.carbs} | Added on: ${new Date(food.createdAt).toLocaleDateString()}`}
-              />
+                value={`Calories: ${food.calories}, Protein: ${food.protein}, Fat: ${food.fat}, Carbs: ${food.carbs}`}
+              >
+                <Button
+                  colorScheme="red"
+                  size="sm"
+                  onClick={() => deleteSavedFood(food._id)}
+                >
+                  Delete
+                </Button>
+              </DataListItem>
             ))}
           </DataListRoot>
         ) : (
           <Text>No saved foods found.</Text>
         )}
+
 
       </Stack>
     </Stack>
