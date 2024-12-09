@@ -1,6 +1,6 @@
 "use client";
 
-import { Stack, HStack, Link, Box} from "@chakra-ui/react"
+import { Stack, HStack, SimpleGrid, Link, Box} from "@chakra-ui/react"
 
 import { useState } from 'react';
 
@@ -101,6 +101,8 @@ function Home() {
 
 {/*favourite*/}
   <Tabs.Content value="Favourite">
+  <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}> 
+
     {/* OatsSmoothie favourite */}
   {favorites.oatSmoothie && (
 
@@ -770,7 +772,7 @@ Remove from the oven and sprinkle fresh herbs over the salmon, if desired. Serve
         </Card.Root>
       )}
 
-
+      </SimpleGrid>
     </Tabs.Content>
 
   
@@ -779,6 +781,8 @@ Remove from the oven and sprinkle fresh herbs over the salmon, if desired. Serve
 {/* Bulking */}
       {/*oats smoothie Card */}
       <Tabs.Content value="Bulking">
+
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
       <Card.Root maxW="sm" overflow="hidden" gap="4">
       <Image      
        height="300px"
@@ -1150,9 +1154,12 @@ Divide the pasta into bowls, garnish with additional Parmesan cheese and cherry 
     {/* end of add to pesto pasta to favourite */}
       </Card.Footer>
     </Card.Root>
+    </SimpleGrid>
       </Tabs.Content>
+    
       {/*cutting section*/}
       <Tabs.Content value="Cutting">
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}> 
       {/*grilled chicken card */}
 
       <Card.Root maxW="sm" overflow="hidden" gap="4">
@@ -1578,6 +1585,7 @@ Enjoy warm or at room temperature as a nutritious, low-carb, and satisfying meal
   </Icon>
       </Card.Footer>
     </Card.Root>
+    </SimpleGrid>
       </Tabs.Content>
       <Tabs.Content value="tasks">
         Manage your tasks for freelancers
