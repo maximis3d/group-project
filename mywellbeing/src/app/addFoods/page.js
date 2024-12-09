@@ -13,14 +13,20 @@ export default function AddFoodsPage() {
   const [error, setError] = useState(null);
   const [savedFoods, setSavedFoods] = useState([]);
 
+  /**
+   * Fetch saved food by user
+   */
   const fetchSavedFoods = async () => {
     try {
-      const response = await axios.get("/get-saved-foods");
-      setSavedFoods(response.data);
+      const response = await axios.get("http://localhost:5000/get-saved-foods", {
+        withCredentials: true, 
+      });
+      setSavedFoods(response.data); 
     } catch (error) {
       console.error("Error fetching saved foods:", error);
     }
-  };
+  }
+  
 
   useEffect(() => {
     fetchSavedFoods();
@@ -193,7 +199,7 @@ export default function AddFoodsPage() {
               <DataListItem
                 key={index}
                 label={<strong>{food.foodName}</strong>}
-                value={`Calories: ${food.calories}, Protein: ${food.protein}, Fat: ${food.fat}, Carbs: ${food.carbs} | Added on: ${new Date(food.dateAdded).toLocaleDateString()}`}
+                value={`Calories: ${food.calories}, Protein: ${food.protein}, Fat: ${food.fat}, Carbs: ${food.carbs} | Added on: ${new Date(food.createdAt).toLocaleDateString()}`}
               />
             ))}
           </DataListRoot>

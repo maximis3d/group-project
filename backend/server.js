@@ -12,7 +12,6 @@ const User = require("./models/User");
 const WeightLog = require("./models/weightLog");
 const SavedFood = require("./models/savedFood")
 
-const { search } = require("./ApiApp");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -334,13 +333,15 @@ app.post("/save-food", isAuth, async (req, res) => {
 app.get("/get-saved-foods", isAuth, async (req, res) => {
   try {
     const savedFoods = await SavedFood.find({ userId: req.session.userId }).sort({
-      dateadded: -1
-    })
+      dateAdded: -1,
+    });
+
+    res.status(200).json(savedFoods);
   } catch (error) {
-    console.error("Error fetching saved foods: ", error);
-    res.status(500).json({ message: "Internal Server Error" })
+    console.error("Error fetching saved foods:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
-})
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
