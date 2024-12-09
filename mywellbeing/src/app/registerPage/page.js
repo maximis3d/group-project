@@ -113,7 +113,7 @@ export default function RegisterPage() {
           </Field>
 
           <Field label="Height" color="grey" mt="20px"> 
-            <Input name="height" placeholder="Enter your height in KG" size="md" />
+            <Input name="height" placeholder="Enter your height in CM" size="md" />
           </Field>
 
           <Field label="Gender" color="grey" mt="20px"> 
