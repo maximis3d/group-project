@@ -20,14 +20,11 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 function renderCustomLabel({ name, value, x, y }) {
   return (
-    <text x={x} y={y} fill="#333" textAnchor="middle" dominantBaseline="central">
+    <text x={x} y={y} fill="TEAL" textAnchor="middle" dominantBaseline="central">
       {`${name}: ${value}`}
     </text>
   );
 }
-
-
-
 export default class HomeChart extends PureComponent {
 
   render() {
@@ -39,27 +36,26 @@ export default class HomeChart extends PureComponent {
         justifyContent: "flex-start",
         width: "300px",
         textAlign: "left",
-        marginTop: "40px",
+        marginTop: "20px",
       }}>
 
-<h1 style={{ fontWeight: "bold", fontSize: "24px", marginBottom:"20px" }}>Overall progress</h1>
-      <PieChart width={600} height={300} onMouseEnter={this.onPieEnter}>
-        <Pie
-          data={data}
-          cx={120}
-          cy={100}
-          innerRadius={60}
-          outerRadius={80}
-          fill="#8884d8"
-          paddingAngle={3}
-          dataKey="value"
-          label={renderCustomLabel}
-        >
-          {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-          ))}
-        </Pie>
-      </PieChart>
+        <PieChart width={600} height={300} onMouseEnter={this.onPieEnter}>
+          <Pie
+            data={data}
+            cx={140}
+            cy={100}
+            innerRadius={60}
+            outerRadius={80}
+            fill="#8884d8"
+            paddingAngle={3}
+            dataKey="value"
+            label={renderCustomLabel}
+          >
+            {data.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            ))}
+          </Pie>
+        </PieChart>
       </div>
     );
   }
