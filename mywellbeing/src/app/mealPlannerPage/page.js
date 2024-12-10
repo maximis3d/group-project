@@ -768,7 +768,154 @@ Remove from the oven and sprinkle fresh herbs over the salmon, if desired. Serve
       )}
 {favorites.cauliflowerRice && (
         <Card.Root maxW="sm" overflow="hidden" gap="4">
+            <Image      
+       height="300px"
 
+        src="https://www.southernliving.com/thmb/6MD2TeeV410mp_LuyXuzFCRVeTI=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/27162_FGFsuperbowl_0359_4x3-2000-0d9e3c72fed441849ad7773bc9909306.jpg"
+        alt="Green double couch with wooden legs"
+      />
+      <Card.Body gap="2">
+        <Card.Title>Cauliflower Rice Bowl
+        </Card.Title>
+        <Card.Description>
+        The Cauliflower Rice Bowl is a nutritious, low-carb dish with tender cauliflower rice, sautéed vegetables, your choice of protein, and creamy avocado, all topped with a light sesame-soy sauce for a flavorful, satisfying meal.
+
+</Card.Description>
+        <Text textStyle="2xl" fontWeight="medium" letterSpacing="tight" mt="2">
+          350 k/cal  30 protein
+        </Text>
+      </Card.Body>
+      <Card.Footer gap="2">
+      <DialogRoot>
+      <DialogTrigger asChild>
+        <Button variant="outline" size="sm">
+          View
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Cauliflower Rice Bowl</DialogTitle>
+        </DialogHeader>
+        <DialogBody>
+        <Image      
+        height="300px"
+        width="500px"
+        src="https://www.southernliving.com/thmb/6MD2TeeV410mp_LuyXuzFCRVeTI=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/27162_FGFsuperbowl_0359_4x3-2000-0d9e3c72fed441849ad7773bc9909306.jpg"
+        alt="Green double couch with wooden legs"
+        paddingBottom="30px"
+      />
+          <p>
+          The Cauliflower Rice Bowl is a light, nutrient-packed dish featuring tender cauliflower rice topped with sautéed vegetables like bell peppers, broccoli, and carrots, and your choice of protein, such as grilled chicken or tofu. Finished with fresh avocado slices and a flavorful sesame-soy drizzle, this bowl offers a satisfying, low-carb meal that's rich in fiber, vitamins, and protein.
+</p>
+          <Heading paddingTop="20px">Recipe</Heading>
+          <List.Root>
+          <List.Item>
+          1 medium head of cauliflower, riced (about 4 cups, or use pre-riced cauliflower)
+          </List.Item>
+          <List.Item>
+          1 tablespoon olive oil or coconut oil
+          </List.Item>
+          <List.Item>
+          1 bell pepper, diced
+          </List.Item>
+          <List.Item>
+          1/2 cup cherry tomatoes, halved
+          </List.Item>
+          <List.Item>
+          1/2 cup broccoli florets
+          </List.Item>
+          <List.Item>
+          1/2 cup shredded carrots
+          </List.Item>
+          <List.Item>
+          1 avocado, sliced
+          </List.Item>
+          <List.Item>
+          Salt and pepper, to taste
+          </List.Item>
+          <List.Item>
+          1 cup grilled chicken breast, sliced (or substitute with 1 cup cooked shrimp or 1 cup cubed, cooked tofu)
+          </List.Item>
+          <List.Item>
+          2 tablespoons soy sauce or coconut aminos (optional)
+          </List.Item>
+          <List.Item>
+          1 teaspoon sesame oil (optional)
+          </List.Item>
+          <List.Item>
+          1 teaspoon lime juice (optional)
+          </List.Item>
+          
+        </List.Root>
+       
+        <Heading paddingTop="20px">Instructions</Heading>
+        <List.Root as="ol">
+          <List.Item>
+          Prepare the Cauliflower Rice:
+
+If using a fresh cauliflower head, cut it into florets and pulse in a food processor until it resembles rice grains.
+Heat olive oil or coconut oil in a large skillet over medium heat. Add the cauliflower rice and cook for 5-7 minutes until softened. Season with salt and pepper.
+</List.Item>
+          <List.Item>
+          Cook the Vegetables:
+
+In the same skillet, sauté the bell pepper, broccoli, and shredded carrots until tender-crisp, about 5 minutes.</List.Item>
+          <List.Item>
+          Prepare the Sauce (Optional):
+
+In a small bowl, whisk together soy sauce, sesame oil, lime juice, honey (if using), and grated ginger. </List.Item>
+          <List.Item>
+          Assemble the Bowl:
+
+Divide the cauliflower rice into bowls. Top with the cooked vegetables, protein of choice, cherry tomatoes, and avocado slices.
+Drizzle the sauce over the top, or serve it on the side. </List.Item>
+          <List.Item>
+          Serve:
+
+Enjoy warm or at room temperature as a nutritious, low-carb, and satisfying meal.
+          </List.Item>
+        </List.Root>
+
+        <Heading paddingTop="20px">Summary</Heading>
+
+        <List.Root>
+          <List.Item>
+          Calories: 300-350 kcal
+          </List.Item>
+          <List.Item>
+          Protein: 25-30 g
+          </List.Item>
+          <List.Item>
+          Carbs: 12-15 g
+          </List.Item>
+          <List.Item>
+          Fats: 15-18 g
+          </List.Item>
+        </List.Root>
+
+        </DialogBody>
+        <DialogFooter>
+          <DialogActionTrigger asChild>
+            <Button variant="outline">Cancel</Button>
+          </DialogActionTrigger>
+          <Button>Save</Button>
+        </DialogFooter>
+        <DialogCloseTrigger />
+      </DialogContent>
+    </DialogRoot>
+
+    <IconButton 
+              variant="ghost" 
+              _hover={{ boxShadow: 'none', bg: 'transparent' }}
+              onClick={() => removeFromFavorites('cauliflowerRice')}
+              aria-label="Remove from favorites"
+            >
+              <VscRemove />
+            </IconButton>
+
+
+
+      </Card.Footer>
         </Card.Root>
       )}
 
@@ -1580,9 +1727,16 @@ Enjoy warm or at room temperature as a nutritious, low-carb, and satisfying meal
       </DialogContent>
     </DialogRoot>
 
-    <Icon fontSize="2xl" color="pink.700">
-    <VscAdd />
-  </Icon>
+    <IconButton 
+      variant="ghost" 
+      _hover={{ boxShadow: 'none', bg: 'transparent' }}
+      onClick={() => addToFavorites('cauliflowerRice')}
+    >
+      <VscAdd />
+    </IconButton>
+
+
+
       </Card.Footer>
     </Card.Root>
     </SimpleGrid>
