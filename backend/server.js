@@ -11,6 +11,7 @@ require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 const User = require("./models/User");
 const WeightLog = require("./models/weightLog");
 const SavedFood = require("./models/savedFood");
+const MoodLog = require("./models/moodLog")
 const { error } = require("console");
 
 
@@ -368,6 +369,27 @@ app.delete("/delete-saved-food/:id", isAuth, async (req, res) => {
   }
 });
 
+// Add a route for mood submission
+app.post("/mood-log", isAuth, async (req, res) => {
+  const { mood } = req.body;
+
+  if (!mood) {
+    return res.status(400).json({ message: "Mood is required" });
+  }
+
+  try {
+    const newMoodLog = new MoodLog({
+      userId: req.session.userId,
+      mood: mood,
+    });
+
+    await newMoodLog.save();
+    res.status(201).json({ message: "Mood logged successfully", mood: newMoodLog });
+  } catch (error) {
+    console.error("Error logging mood:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
 
 
 app.listen(PORT, () => {

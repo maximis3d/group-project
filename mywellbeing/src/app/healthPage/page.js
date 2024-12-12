@@ -1,57 +1,82 @@
-import { Link, Button, HStack, Stack, Image } from "@chakra-ui/react";
-import { Slider } from "@/components/ui/slider";
-import LineChartComponent from "./linechart";  // Import the chart component
+"use client";
+import React, { useState } from "react";
+import { Stack, Box, Text } from "@chakra-ui/react";
+import MoodTextBox from "./moodTextBox"; // Import the MoodSlider component
+import NavBar from "@/components/NavBar";
+import axios from "axios"; // Import axios
 
 export default function HealthPage() {
-  return (
-    <Stack spacing={4} direction="column" align="center" mt="20px">
-      {/*****************************************Start of header*****************************************/}
-      <HStack spacing={4} className="headerContainer" align="center">
-        <Link href="/homePage" mt="10px" color="teal">
-          <p style={{ fontSize: '18px', padding: '0 8px' }}>Home</p>
-        </Link>
-        <Link href="/mealPlannerPage" mt="10px" color="teal">
-          <p style={{ fontSize: '18px', padding: '0 8px' }}>Meals</p>
-        </Link>
-        <Link href="/healthPage" mt="10px" color="teal">
-          <p style={{ fontSize: '18px', padding: '0 8px' }}>Health</p>
-        </Link>
-        <Link href="/goalsPage" mt="10px" color="teal">
-          <p style={{ fontSize: '18px', padding: '0 8px' }}>Goals</p>
-        </Link>
-        <Link href="/accountPage" mt="10px" color="teal">
-          <p style={{ fontSize: '18px', padding: '0 8px' }}>Account</p>
-        </Link>
-      </HStack>
-      {/*****************************************Header Section End*****************************************/}
+  const [submissionStatus, setSubmissionStatus] = useState(null);
 
-      {/* Body Section */}
-      <div
-        className="bodyContainer"
+  // Function to handle the submission of mood
+  const submitMood = async (moodValue) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/mood-log",
+        { mood: moodValue },
+        { withCredentials: true }
+      );
+      console.log("Mood submitted successfully:", response.data);
+      setSubmissionStatus("success");
+    } catch (error) {
+      console.error("Error submitting mood:", error.message);
+      setSubmissionStatus("error");
+    }
+  };
+
+  // Handle mood change (triggered by slider submission)
+  const handleMoodChange = async (moodValue) => {
+    setSubmissionStatus("loading"); // Set loading state while waiting for API response
+    await submitMood(moodValue); // Call the submitMood function
+  };
+
+  return (
+    <Stack
+      spacing={4}
+      direction="column"
+      align="center"
+      mt="5px"
+      p={{ base: 4, md: 8 }}
+      maxW="1200px"
+      mx="auto"
+    >
+      <NavBar />
+
+      <Box
         style={{
+          padding: "15px",
+          borderRadius: "10px",
+          width: "100%",
+          maxWidth: "550px",
+          marginTop: "100px",
+          alignSelf: "center",
           display: "flex",
           flexDirection: "column",
-          alignItems: "flex-start",
-          justifyContent: "flex-start",
-          width: "300px",
-          height: "100px",
+          alignItems: "center",
           textAlign: "center",
-          marginTop: "40px"
+          border: "2px solid teal",
         }}
       >
-        <Image
-          height="200px"
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Smiley.svg/330px-Smiley.svg.png"
-          alt="Smiley Face"
-        />
-        <Slider width="100px" defaultValue={[40]} />
-        <Button>Submit</Button>
-      </div>
+        <h1
+          style={{
+            fontWeight: "bold",
+            fontSize: "24px",
+            marginBottom: "5px",
+            marginTop: "5px",
+          }}
+        >
+          Add today’s mood
+        </h1>
 
-      {/* Render the LineChartComponent here */}
-      <LineChartComponent />
+        <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+          <MoodTextBox onMoodChange={handleMoodChange} />
+        </div>
 
-      {/*****************************************Main Body Section End*****************************************/}
+        {submissionStatus === "loading" && <Text>Submitting...</Text>}
+        {submissionStatus === "success" && <Text color="green">Mood submitted successfully!</Text>}
+        {submissionStatus === "error" && <Text color="red">Error submitting mood. Please try again.</Text>}
+      </Box>
+
     </Stack>
   );
 }
