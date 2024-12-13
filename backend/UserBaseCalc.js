@@ -1,62 +1,58 @@
-const readline = require('readline');
+const mongoose = require('mongoose');
 const { calculateBMR, calculateTDEE } = require('./calculateCalories');
+const User = require('./models/User');
+require('dotenv').config();
 
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
+async function calculateAndUpdateUser(userId) {
+    try {
+        
+        await mongoose.connect(process.env.MONGODB_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        });
+        console.log("Connected to MongoDB");
 
-function userDetails() {
-    rl.question("Enter your weight in kg: ", (w) => {
-        const weight = parseFloat(w);
-        if (isNaN(weight) || weight <= 0) {
-            console.error("Invalid weight entered.");
-            rl.close();
+        
+        const user = await User.findById(userId);
+
+        if (!user) {
+            console.error(`User with ID ${userId} not found.`);
             return;
         }
 
-        rl.question("Enter your height in cm: ", (h) => {
-            const height = parseFloat(h);
-            if (isNaN(height) || height <= 0) {
-                console.error("Invalid height entered.");
-                rl.close();
-                return;
-            }
+        const { weight, height, age, gender, activity } = user;
 
-            rl.question("Enter your age in years: ", (a) => {
-                const age = parseInt(a, 10);
-                if (isNaN(age) || age <= 0) {
-                    console.error("Invalid age entered.");
-                    rl.close();
-                    return;
-                }
+      
+        if (!weight || !height || !age || !gender || !activity) {
+            console.error(`User ${user.username} is missing required fields.`);
+            return;
+        }
 
-                rl.question("Enter your activity level (1-4): ", (ac) => {
-                    const activityLevel = parseInt(ac, 10);
-                    if (![1, 2, 3, 4].includes(activityLevel)) {
-                        console.error("Activity level must be between 1 and 4.");
-                        rl.close();
-                        return;
-                    }
+       
+        const BMR = calculateBMR(weight, height, age, gender);
+        const TDEE = calculateTDEE(BMR, activity);
 
-                    rl.question("Enter your gender (male or female): ", (g) => {
-                        const gender = g.toLowerCase();
-                        if (!['male', 'female'].includes(gender)) {
-                            console.error("Gender must be either 'male' or 'female'.");
-                            rl.close();
-                            return;
-                        }
+        
+        user.BMR = BMR;
+        user.TDEE = TDEE;
+        await user.save();
 
-                        const BMR = calculateBMR(weight, height, age, gender);
-                        const TDEE = calculateTDEE(BMR, activityLevel);
-                        console.log(`Your BMR is: ${BMR.toFixed(2)}`);
-                        console.log(`Your Total Daily Energy Expenditure (TDEE) is: ${TDEE.toFixed(2)}`);
-                        rl.close();
-                    });
-                });
-            });
-        });
-    });
+        console.log(`Updated user ${user.username}: BMR=${BMR.toFixed(2)}, TDEE=${TDEE.toFixed(2)}`);
+
+        
+        await mongoose.disconnect();
+        console.log("Disconnected from MongoDB");
+    } catch (error) {
+        console.error("Error:", error);
+    }
 }
 
-userDetails();
+
+const userId = process.argv[2];
+
+if (!userId) {
+    console.error("Please provide a User ID as an argument.");
+    process.exit(1);
+}
+
+calculateAndUpdateUser(userId);

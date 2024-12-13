@@ -3,6 +3,7 @@ const connectDB = require("./db");
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const apiRoutes = require("./ApiApp");
+const userCalcRoutes = require("./routes/userCalc");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -20,6 +21,10 @@ app.use("/user", userRoutes);
 
 // Define API routes
 app.use("/api", apiRoutes);
+
+// Define user calculation routes
+app.use("/usercalc", userCalcRoutes);
+
 
 // Start the server
 app.listen(PORT, () => {
