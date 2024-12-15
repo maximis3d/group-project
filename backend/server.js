@@ -120,20 +120,6 @@ app.patch("/update-details", isAuth, async (req, res) => {
   try {
     const updateFields = { username, email, weight, height, age, gender, phoneNumber };
 
-    // If weight, height, or age is provided, recalculate the BMR
-    if (weight || height || age) {
-      const currentUser = await User.findOne({ username: req.session.username });
-
-      const updatedWeight = weight || currentUser.weight;
-      const updatedHeight = height || currentUser.height;
-      const updatedAge = age || currentUser.age;
-      const updatedGender = gender || currentUser.gender;
-
-      // Calculate updated BMR
-      const bmr = calculateBMR(updatedWeight, updatedHeight, updatedAge, updatedGender);
-      updateFields.bmr = bmr;  // Update BMR
-    }
-
     const updatedUser = await User.findOneAndUpdate(
       { username: req.session.username },
       updateFields,
@@ -162,6 +148,7 @@ app.patch("/update-details", isAuth, async (req, res) => {
 
 
 
+
 app.post("/register", async (req, res) => {
   const {
     username,
@@ -172,7 +159,6 @@ app.post("/register", async (req, res) => {
     weight,
     height,
     gender,
-    calories,
     activity,
   } = req.body;
 
@@ -181,7 +167,7 @@ app.post("/register", async (req, res) => {
     return res.status(400).json({ message: "Invalid email address." });
   }
 
-  const passwordRegex = /[^a-zA-Z0-9]/;  // Password must contain at least one special character
+  const passwordRegex = /[^a-zA-Z0-9]/;
   if (!password || password.length < 8 || !passwordRegex.test(password)) {
     return res.status(400).json({
       message: "Password must be at least 8 characters long and contain at least one special character.",
@@ -208,10 +194,6 @@ app.post("/register", async (req, res) => {
   }
 
   try {
-    // 7. Calculate BMR
-    const bmr = calculateBMR(weight, height, age, gender);
-
-    // 8. Create new user
     const user = new User({
       username,
       email,
@@ -221,12 +203,9 @@ app.post("/register", async (req, res) => {
       weight,
       height,
       gender,
-      calories,
       activity,
-      bmr, 
     });
 
-    // 9. Save the user
     await user.save();
     res.status(201).json({ message: "Registration successful" });
   } catch (error) {
@@ -234,6 +213,7 @@ app.post("/register", async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
 
 app.post("/logout", (req, res) => {
   req.session.destroy(err => {

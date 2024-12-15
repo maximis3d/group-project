@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
-const calculateBMR = require("../utils/calculateBMR").default
-const activityLevel = require("../utils/activityLevel").default
-
+const calculateBMR = require("../utils/calculateBMR").default;
+const activityLevel = require("../utils/activityLevel").default;
 
 const activityMap = {
   "Not Active": 1.15,
@@ -31,30 +30,44 @@ const userSchema = new mongoose.Schema({
   weight: { type: Number, required: true },
   height: { type: Number, required: true },
   gender: { type: String, required: true },
-  calories: { type: Number, required: true },
   activity: {
     type: String,
     required: true,
     enum: ["Not Active", "Lightly Active", "Moderately Active", "Very Active"],
   },
-  bmr: { type: Number, default: 0 }, 
+  bmr: { type: Number, default: 0 },
   tee: { type: Number, default: 0 },
+  calories: { type: Number, default: 0 },
+  protein: { type: Number, default: 0 },
+  fat: { type: Number, default: 0 },
+  carbs: { type: Number, default: 0 },
 });
 
-// Pre-save middleware to hash password and calculate BMR
-
+// Pre-save middleware to hash password and calculate BMR, TEE, and macronutrients
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 
   try {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
-    
+
     const bmr = calculateBMR(this.weight, this.height, this.age, this.gender);
-    this.bmr = bmr;  
+    this.bmr = bmr;
 
     const activityLevelNum = activityMap[this.activity];
     this.tee = activityLevel(bmr, activityLevelNum); // Calculate TEE
+
+    // Calculate macronutrients based on TEE
+    const proteinPercentage = 0.2;  // 20% of total calories
+    const fatPercentage = 0.3;      // 30% of total calories
+    const carbsPercentage = 0.5;    // 50% of total calories
+
+    const totalCalories = this.tee;  // Assuming TEE is the total calories needed per day
+
+    this.calories = totalCalories;
+    this.protein = (totalCalories * proteinPercentage) / 4;  // Protein is 4 calories per gram
+    this.fat = (totalCalories * fatPercentage) / 9;          // Fat is 9 calories per gram
+    this.carbs = (totalCalories * carbsPercentage) / 4;      // Carbs is 4 calories per gram
 
     next();
   } catch (err) {
@@ -62,6 +75,7 @@ userSchema.pre("save", async function (next) {
   }
 });
 
+// Pre-update middleware to calculate updated macronutrients based on new TEE
 userSchema.pre("findOneAndUpdate", async function (next) {
   const update = this.getUpdate();
   const { weight, height, age, gender, activity } = update;
@@ -75,17 +89,20 @@ userSchema.pre("findOneAndUpdate", async function (next) {
     const updatedActivity = activity || currentUser.activity;
 
     const bmr = calculateBMR(updatedWeight, updatedHeight, updatedAge, updatedGender);
-
     const activityLevelNum = activityMap[updatedActivity];
     const tee = activityLevel(bmr, activityLevelNum);
 
     this.set("bmr", bmr); 
-    this.set("tee", tee); 
+    this.set("tee", tee);
+
+    // Recalculate macronutrients based on updated TEE
+    this.set("protein", (tee * 0.2) / 4);
+    this.set("fat", (tee * 0.3) / 9);
+    this.set("carbs", (tee * 0.5) / 4);
   }
 
   next();
 });
-
 
 // Method to compare password
 userSchema.methods.comparePassword = async function (candidatePassword) {

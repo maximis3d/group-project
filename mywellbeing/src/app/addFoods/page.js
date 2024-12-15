@@ -4,6 +4,7 @@ import { Link, Button, HStack, Stack, Heading, Input, IconButton, Box, Spinner, 
 import { DataListItem, DataListRoot } from "@/components/ui/data-list";
 import { LuSearch } from "react-icons/lu";
 import axios from "axios";
+import NavBar from "@/components/NavBar";
 
 export default function AddFoodsPage() {
   // State variables for managing search query, results, loading, and errors
@@ -113,10 +114,8 @@ export default function AddFoodsPage() {
       console.error("Error saving food:", error);
   
       if (error.response) {
-        // Server responded with a status code other than 2xx
         alert(error.response.data.message || "Failed to save the food item. Please try again.");
       } else if (error.request) {
-        // Request was made but no response received
         alert("No response from the server. Please try again.");
       } else {
         // Other errors
@@ -131,26 +130,7 @@ export default function AddFoodsPage() {
   return (
     <Stack spacing={4} direction="column" align="center" mt="20px">
       {/*****************************************Start of header*****************************************/}
-      <HStack spacing={4} className="headerContainer" align="center">
-        <Link href="/homePage" mt="10px" color="teal">
-          <p style={{ fontSize: "18px", padding: "0 8px" }}>Home</p>
-        </Link>
-        <Link href="/mealPlannerPage" mt="10px" color="teal">
-          <p style={{ fontSize: "18px", padding: "0 8px" }}>Meals</p>
-        </Link>
-        <Link href="/healthPage" mt="10px" color="teal">
-          <p style={{ fontSize: "18px", padding: "0 8px" }}>Health</p>
-        </Link>
-        <Link href="/goalsPage" mt="10px" color="teal">
-          <p style={{ fontSize: "18px", padding: "0 8px" }}>Goals</p>
-        </Link>
-        <Link href="/accountPage" mt="10px" color="teal">
-          <p style={{ fontSize: "18px", padding: "0 8px" }}>Account</p>
-        </Link>
-        <Link href="/addFoods" mt="10px" color="teal">
-          <p style={{ fontSize: "18px", padding: "0 8px" }}>Add Foods</p>
-        </Link>
-      </HStack>
+      <NavBar />
       {/*****************************************End of header*****************************************/}
 
       <Stack gap="8" width="100%" maxW="600px" px="4">
