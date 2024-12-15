@@ -7,7 +7,7 @@
     "mywellbeing"
   ],
   "scripts": {
-    "dev": "concurrently \"nodemon backend/server --silent\" \"npm run dev --workspace mywellbeing --silent\"", 
+    "dev": "concurrently \"nodemon backend/server --silent\" \"npm run dev --workspace mywellbeing --silent\"",
     "start": "npm run dev",
     "test": "jest"
   },
@@ -19,6 +19,7 @@
     "connect-mongodb-session": "^5.0.0",
     "cors": "^2.8.5",
     "ejs": "^3.1.10",
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "react-datepicker": "^7.5.0"
   }
 }

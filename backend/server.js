@@ -41,7 +41,7 @@ const store = new MongoDBSession({
 });
 
 // Session Middleware
-app.use(
+app.use( 
   session({
     secret: "key that will sign cookie",
     resave: false,
@@ -387,6 +387,30 @@ app.post("/mood-log", isAuth, async (req, res) => {
     res.status(201).json({ message: "Mood logged successfully", mood: newMoodLog });
   } catch (error) {
     console.error("Error logging mood:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+app.get("/mood-logs", isAuth, async (req, res) => {
+  const { startDate, endDate } = req.query;
+
+  try {
+    const filter = { userId: req.session.userId };
+    console.log(filter)
+
+    if (startDate && endDate) {
+      filter.date = { $gte: new Date(startDate), $lte: new Date(endDate) };
+    }
+
+    const moodLogs = await MoodLog.find(filter).sort({ date: 1 });
+    res.status(200).json(
+      moodLogs.map((log) => ({
+        mood: log.mood,
+        date: log.date.toISOString(), 
+      }))
+    );
+  } catch (error) {
+    console.error("Error fetching mood logs:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
