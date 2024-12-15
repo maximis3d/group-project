@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, Button, HStack, Stack, Spinner } from "@chakra-ui/react";
 import { Field } from "@/components/ui/field";
-import { Input } from "@chakra-ui/react";
+import { Input, Text } from "@chakra-ui/react";
+import NavBar from "@/components/NavBar";
 
 async function handleLogout() {
   try {
@@ -106,24 +107,7 @@ export default function AccountPage() {
 
   return (
     <Stack spacing={4} direction="column" align="center" mt="20px">
-      <HStack spacing={4} className="headerContainer" align="center">
-        <Link href="/homePage" mt="10px" color="teal">
-          <p style={{ fontSize: "18px", padding: "0 8px" }}>Home</p>
-        </Link>
-        <Link href="/mealPlannerPage" mt="10px" color="teal">
-          <p style={{ fontSize: "18px", padding: "0 8px" }}>Meals</p>
-        </Link>
-        <Link href="/healthPage" mt="10px" color="teal">
-          <p style={{ fontSize: "18px", padding: "0 8px" }}>Health</p>
-        </Link>
-        <Link href="/goalsPage" mt="10px" color="teal">
-          <p style={{ fontSize: "18px", padding: "0 8px" }}>Goals</p>
-        </Link>
-        <Link href="/accountPage" mt="10px" color="teal">
-          <p style={{ fontSize: "18px", padding: "0 8px" }}>Account</p>
-        </Link>
-      </HStack>
-      <div style={{ width: "360px", height: "2px", backgroundColor: "teal", margin: "16px 0" }} />
+      <NavBar />
       <div className="bodyContainer" style={{
         display: "flex",
         flexDirection: "column",
@@ -133,6 +117,7 @@ export default function AccountPage() {
         textAlign: "center",
         marginTop: "20px"
       }}>
+        <Text fontSize="24px" fontWeight="bold">Edit Personal Details</Text>
         {[
           { label: "Your name", fieldName: "username" },
           { label: "Your email", fieldName: "email" },
