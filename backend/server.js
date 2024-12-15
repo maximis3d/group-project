@@ -365,9 +365,18 @@ app.post("/save-food", isAuth, async (req, res) => {
 // Retireve saved food items
 app.get("/get-saved-foods", isAuth, async (req, res) => {
   try {
-    const savedFoods = await SavedFood.find({ userId: req.session.userId }).sort({
-      dateAdded: -1,
-    });
+    // Get today's date at 00:00:00 (midnight) and 23:59:59 (end of the day)
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);  // Set time to 00:00:00
+
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);  // Set time to 23:59:59
+
+    // Find saved foods that were logged today using the createdAt field
+    const savedFoods = await SavedFood.find({
+      userId: req.session.userId,
+      createdAt: { $gte: startOfDay, $lte: endOfDay }  // Use createdAt for the timestamp
+    }).sort({ createdAt: -1 });  // Sort by the most recent first
 
     res.status(200).json(savedFoods);
   } catch (error) {
@@ -375,6 +384,8 @@ app.get("/get-saved-foods", isAuth, async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
+
 
 
 app.delete("/delete-saved-food/:id", isAuth, async (req, res) => {

@@ -88,7 +88,7 @@ const HomePage = () => {
 
       {/*****************************************Start of main body section*****************************************/}
       <Box className="bodyContainer" display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" width="100%" textAlign="center" mt="40px">
-        <Text fontWeight="bold" fontSize="24px" mt="20px">More detail</Text>
+        <Text fontWeight="bold" fontSize="24px" mt="20px">Daily Breakdown</Text>
         <HStack spacing={4} className="bottomContainer" align="flex-start" width="100%" textAlign="center" justify="center" wrap="wrap">
           <Box
             style={{
@@ -111,7 +111,7 @@ const HomePage = () => {
                 <span style={{ fontSize: "20px", color: "#0e8d78", fontWeight: "bold" }}>Calories</span>
                 <div style={{ display: "flex", alignItems: "baseline", marginTop: "2px" }}>
                   <StatValueText
-                    value={nutritionData.tee.total} // Use 'total' for calories
+                    value={nutritionData.tee.total} 
                     color="teal.600"
                     fontSize="18px"
                     formatOptions={{ style: "decimal", maximumFractionDigits: 0 }}
@@ -122,7 +122,7 @@ const HomePage = () => {
                 </div>
               </div>
               <StatHelpText color="gray.500" mb="2">
-                {((nutritionData.tee.total / nutritionData.tee.goal) * 100).toFixed(2)}% achieved
+                {((nutritionData.tee.total / nutritionData.tee.goal) * 100).toFixed()}% achieved
               </StatHelpText>
               <ProgressRoot width="240px" maxWidth="300px" value={calculateProgress(nutritionData.tee.total, nutritionData.tee.goal)}>
                 <ProgressBar />
@@ -165,7 +165,7 @@ const HomePage = () => {
                     formatOptions={{ style: "decimal", maximumFractionDigits: 0 }}
                   />
                   <span style={{ fontSize: "16px", color: "grey", marginLeft: "4px" }}>
-                    out of {nutritionData.carbs.goal}
+                    out of {nutritionData.carbs.goal.toFixed()}
                   </span>
                 </div>
               </div>
