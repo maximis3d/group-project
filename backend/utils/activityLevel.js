@@ -1,9 +1,4 @@
-const notActive = 1.15;
-const lightlyActive = 1.35;
-const moderatelyActive = 1.55;
-const veryActive = 1.8;
-
-function activityLevel(BMR, active) {
+export default function activityLevel(BMR, active) {
     let TotalExpenditure;
     if (active === 1) {
         TotalExpenditure = BMR * notActive;
@@ -17,4 +12,3 @@ function activityLevel(BMR, active) {
     return TotalExpenditure;
 }
 
-module.exports = { activityLevel };

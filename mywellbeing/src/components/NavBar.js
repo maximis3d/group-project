@@ -17,12 +17,13 @@ const NavBar = () => {
         <Link href="/goalsPage" mt="10px" color="teal">
           <Text fontSize={{ base: '16px', md: '18px' }} padding="0 8px">Goals</Text>
         </Link>
-        <Link href="/accountPage" mt="10px" color="teal">
-          <Text fontSize={{ base: '16px', md: '18px' }} padding="0 8px">Account</Text>
-        </Link>
         <Link href="/addFoods" mt="10px" color="teal">
           <Text fontSize={{ base: '16px', md: '18px' }} padding="0 8px">Add Foods</Text>
         </Link>
+        <Link href="/accountPage" mt="10px" color="teal">
+          <Text fontSize={{ base: '16px', md: '18px' }} padding="0 8px">Account</Text>
+        </Link>
+        
       </HStack>
 
       <Box width="100%" height="2px" backgroundColor="teal" margin="16px 0" />

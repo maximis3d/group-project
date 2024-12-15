@@ -32,7 +32,8 @@ export default function AccountPage() {
     dob: "",
     weight: "",
     height: "",
-    phoneNumber: "",
+    age: 0,
+    activity: ""
   });
 
   const [isLoading, setIsLoading] = useState(true);
@@ -54,7 +55,8 @@ export default function AccountPage() {
             dob: data.dob,
             weight: data.weight,
             height: data.height,
-            phoneNumber: data.phoneNumber,
+            age: data.age,
+            activity: data.activity
           });
           setIsLoading(false);
         } else {
@@ -137,7 +139,8 @@ export default function AccountPage() {
           { label: "Your date of birth", fieldName: "dob" },
           { label: "Your height", fieldName: "height" },
           { label: "Your weight", fieldName: "weight" },
-          { label: "Your phone number", fieldName: "phoneNumber" },
+          { label: "Your age", fieldName: "age" },
+          { label: "Your activity level", fieldName: "activity" },
         ].map(({ label, fieldName }) => (
           <Field key={fieldName} label={label} color="grey" mt="20px">
             <HStack>

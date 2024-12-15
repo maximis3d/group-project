@@ -1,6 +1,17 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
+const calculateBMR = require("../utils/calculateBMR").default
+const activityLevel = require("../utils/activityLevel").default
+
+
+const activityMap = {
+  "Not Active": 1.15,
+  "Lightly Active": 1.35,
+  "Moderately Active": 1.55,
+  "Very Active": 1.8,
+};
+
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true },
   email: {
@@ -26,18 +37,25 @@ const userSchema = new mongoose.Schema({
     required: true,
     enum: ["Not Active", "Lightly Active", "Moderately Active", "Very Active"],
   },
-  bmi: { type: Number, default: 0 }, // New field for BMI
+  bmr: { type: Number, default: 0 }, 
+  tee: { type: Number, default: 0 },
 });
 
-// Pre-save middleware to hash password
+// Pre-save middleware to hash password and calculate BMR
+
 userSchema.pre("save", async function (next) {
-  // Only hash the password if it is modified or new
   if (!this.isModified("password")) return next();
 
   try {
-    // Salt rounds can be adjusted for security (e.g., 10-12 is a good range)
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
+    
+    const bmr = calculateBMR(this.weight, this.height, this.age, this.gender);
+    this.bmr = bmr;  
+
+    const activityLevelNum = activityMap[this.activity];
+    this.tee = activityLevel(bmr, activityLevelNum); // Calculate TEE
+
     next();
   } catch (err) {
     next(err);
@@ -46,32 +64,27 @@ userSchema.pre("save", async function (next) {
 
 userSchema.pre("findOneAndUpdate", async function (next) {
   const update = this.getUpdate();
-  const { weight, height } = update;
+  const { weight, height, age, gender, activity } = update;
 
-  console.log("Updating user:", update);
-
-  // Ensure BMI is recalculated if either height or weight is provided
-  if (weight || height) {
-    // If height is updated, use it to calculate BMI
+  if (weight || height || age || activity) {
     const currentUser = await this.model.findOne(this.getQuery());
-    const currentWeight = weight || currentUser.weight;
-    const currentHeight = height || currentUser.height;
+    const updatedWeight = weight || currentUser.weight;
+    const updatedHeight = height || currentUser.height;
+    const updatedAge = age || currentUser.age;
+    const updatedGender = gender || currentUser.gender;
+    const updatedActivity = activity || currentUser.activity;
 
-    // Only calculate BMI if both weight and height are available
-    if (currentWeight && currentHeight) {
-      const heightInMeters = currentHeight / 100; // Convert height to meters
-      const bmi = currentWeight / (heightInMeters * heightInMeters); // BMI formula
-      console.log("Calculated BMI:", bmi);
-      this.set("bmi", bmi); // Update BMI
-    }
+    const bmr = calculateBMR(updatedWeight, updatedHeight, updatedAge, updatedGender);
+
+    const activityLevelNum = activityMap[updatedActivity];
+    const tee = activityLevel(bmr, activityLevelNum);
+
+    this.set("bmr", bmr); 
+    this.set("tee", tee); 
   }
 
   next();
 });
-
-
-
-
 
 
 // Method to compare password

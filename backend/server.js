@@ -12,7 +12,7 @@ const User = require("./models/User");
 const WeightLog = require("./models/weightLog");
 const SavedFood = require("./models/savedFood");
 const MoodLog = require("./models/moodLog")
-const { error } = require("console");
+
 
 
 const app = express();
@@ -21,6 +21,7 @@ const PORT = process.env.PORT || 5000;
 /**
  * Helper Functions
  */
+const calculateBMR = require('./utils/calculateBMR').default;
 
 const validateFields = (fields) => Object.values(fields).every(value => value !== undefined && value !== null);
 
@@ -28,7 +29,7 @@ const validateFields = (fields) => Object.values(fields).every(value => value !=
 mongoose
   .connect(process.env.MONGODB_URI, {})
   .then(() => {
-    console.log("MongoDB Connected");
+    console.log("MongoDB Connected")
   })
   .catch((err) => {
     console.error("MongoDB connection error:", err);
@@ -114,25 +115,23 @@ app.get("/user", isAuth, async (req, res) => {
 });
 
 app.patch("/update-details", isAuth, async (req, res) => {
-  const { username, email, dob, weight, height, phoneNumber } = req.body;
-
-  console.log("Incoming update fields:", req.body); // Log incoming fields
+  const { username, email, weight, height, age, gender, phoneNumber } = req.body;
 
   try {
-    const updateFields = { username, email, dob, weight, height, phoneNumber };
+    const updateFields = { username, email, weight, height, age, gender, phoneNumber };
 
-    // Only calculate BMI if weight or height is provided in the update
-    if (weight || height) {
+    // If weight, height, or age is provided, recalculate the BMR
+    if (weight || height || age) {
       const currentUser = await User.findOne({ username: req.session.username });
 
       const updatedWeight = weight || currentUser.weight;
       const updatedHeight = height || currentUser.height;
+      const updatedAge = age || currentUser.age;
+      const updatedGender = gender || currentUser.gender;
 
-      if (updatedWeight && updatedHeight) {
-        const heightInMeters = updatedHeight / 100; // Convert height to meters
-        const bmi = updatedWeight / (heightInMeters * heightInMeters); // BMI formula
-        updateFields.bmi = bmi; // Update BMI field
-      }
+      // Calculate updated BMR
+      const bmr = calculateBMR(updatedWeight, updatedHeight, updatedAge, updatedGender);
+      updateFields.bmr = bmr;  // Update BMR
     }
 
     const updatedUser = await User.findOneAndUpdate(
@@ -162,6 +161,7 @@ app.patch("/update-details", isAuth, async (req, res) => {
 
 
 
+
 app.post("/register", async (req, res) => {
   const {
     username,
@@ -176,11 +176,42 @@ app.post("/register", async (req, res) => {
     activity,
   } = req.body;
 
+  const emailRegex = /.+@.+\..+/;
+  if (!email || !emailRegex.test(email)) {
+    return res.status(400).json({ message: "Invalid email address." });
+  }
+
+  const passwordRegex = /[^a-zA-Z0-9]/;  // Password must contain at least one special character
+  if (!password || password.length < 8 || !passwordRegex.test(password)) {
+    return res.status(400).json({
+      message: "Password must be at least 8 characters long and contain at least one special character.",
+    });
+  }
+
+  if (!age || isNaN(age) || age < 18 || age > 100) {
+    return res.status(400).json({ message: "Age must be a valid number between 18 and 100." });
+  }
+
+  if (!weight || isNaN(weight) || weight <= 0) {
+    return res.status(400).json({ message: "Weight must be a positive number." });
+  }
+
+  if (!height || isNaN(height) || height <= 0) {
+    return res.status(400).json({ message: "Height must be a positive number." });
+  }
+
+  const allowedActivityLevels = ["Not Active", "Lightly Active", "Moderately Active", "Very Active"];
+  if (!activity || !allowedActivityLevels.includes(activity)) {
+    return res.status(400).json({
+      message: "Activity level must be one of the following: Not Active, Lightly Active, Moderately Active, Very Active.",
+    });
+  }
+
   try {
-    // Calculate BMI before saving the user
-    const heightInMeters = height / 100; // Convert height to meters
-    const bmi = weight / (heightInMeters * heightInMeters); // BMI formula
-    
+    // 7. Calculate BMR
+    const bmr = calculateBMR(weight, height, age, gender);
+
+    // 8. Create new user
     const user = new User({
       username,
       email,
@@ -192,9 +223,10 @@ app.post("/register", async (req, res) => {
       gender,
       calories,
       activity,
-      bmi,  // Include calculated BMI
+      bmr, 
     });
 
+    // 9. Save the user
     await user.save();
     res.status(201).json({ message: "Registration successful" });
   } catch (error) {
@@ -202,8 +234,6 @@ app.post("/register", async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
-
-
 
 app.post("/logout", (req, res) => {
   req.session.destroy(err => {
