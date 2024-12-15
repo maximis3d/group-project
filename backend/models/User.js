@@ -26,6 +26,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     enum: ["Not Active", "Lightly Active", "Moderately Active", "Very Active"],
   },
+  bmi: { type: Number, default: 0 }, // New field for BMI
 });
 
 // Pre-save middleware to hash password
@@ -43,7 +44,37 @@ userSchema.pre("save", async function (next) {
   }
 });
 
+userSchema.pre("findOneAndUpdate", async function (next) {
+  const update = this.getUpdate();
+  const { weight, height } = update;
 
+  console.log("Updating user:", update);
+
+  // Ensure BMI is recalculated if either height or weight is provided
+  if (weight || height) {
+    // If height is updated, use it to calculate BMI
+    const currentUser = await this.model.findOne(this.getQuery());
+    const currentWeight = weight || currentUser.weight;
+    const currentHeight = height || currentUser.height;
+
+    // Only calculate BMI if both weight and height are available
+    if (currentWeight && currentHeight) {
+      const heightInMeters = currentHeight / 100; // Convert height to meters
+      const bmi = currentWeight / (heightInMeters * heightInMeters); // BMI formula
+      console.log("Calculated BMI:", bmi);
+      this.set("bmi", bmi); // Update BMI
+    }
+  }
+
+  next();
+});
+
+
+
+
+
+
+// Method to compare password
 userSchema.methods.comparePassword = async function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };

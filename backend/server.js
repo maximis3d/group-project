@@ -116,17 +116,28 @@ app.get("/user", isAuth, async (req, res) => {
 app.patch("/update-details", isAuth, async (req, res) => {
   const { username, email, dob, weight, height, phoneNumber } = req.body;
 
+  console.log("Incoming update fields:", req.body); // Log incoming fields
+
   try {
-    if (username) {
-      const existingUser = await User.findOne({ username });
-      if (existingUser && existingUser.username !== req.session.username) {
-        return res.status(400).json({ message: "Username already taken" });
+    const updateFields = { username, email, dob, weight, height, phoneNumber };
+
+    // Only calculate BMI if weight or height is provided in the update
+    if (weight || height) {
+      const currentUser = await User.findOne({ username: req.session.username });
+
+      const updatedWeight = weight || currentUser.weight;
+      const updatedHeight = height || currentUser.height;
+
+      if (updatedWeight && updatedHeight) {
+        const heightInMeters = updatedHeight / 100; // Convert height to meters
+        const bmi = updatedWeight / (heightInMeters * heightInMeters); // BMI formula
+        updateFields.bmi = bmi; // Update BMI field
       }
     }
 
     const updatedUser = await User.findOneAndUpdate(
       { username: req.session.username },
-      { username, email, dob, weight, height, phoneNumber },
+      updateFields,
       { new: true }
     );
 
@@ -148,7 +159,10 @@ app.patch("/update-details", isAuth, async (req, res) => {
   }
 });
 
-app.post("/register", async (req, res, next) => {
+
+
+
+app.post("/register", async (req, res) => {
   const {
     username,
     email,
@@ -163,6 +177,10 @@ app.post("/register", async (req, res, next) => {
   } = req.body;
 
   try {
+    // Calculate BMI before saving the user
+    const heightInMeters = height / 100; // Convert height to meters
+    const bmi = weight / (heightInMeters * heightInMeters); // BMI formula
+    
     const user = new User({
       username,
       email,
@@ -174,6 +192,7 @@ app.post("/register", async (req, res, next) => {
       gender,
       calories,
       activity,
+      bmi,  // Include calculated BMI
     });
 
     await user.save();
@@ -183,6 +202,8 @@ app.post("/register", async (req, res, next) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
+
 
 app.post("/logout", (req, res) => {
   req.session.destroy(err => {
