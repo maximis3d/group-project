@@ -13,48 +13,55 @@ export default function AddFoodsPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [savedFoods, setSavedFoods] = useState([]);
+  const [selectedDate, setSelectedDate] = useState("");
 
   /**
-   * Fetch saved food by user
+   * Get the start and end of a specific day for filtering purposes
+   */
+  const getDateRangeForSpecificDay = (date) => {
+    const day = new Date(date);
+    const startOfDay = new Date(day.setHours(0, 0, 0, 0)); // Start at 00:00:00
+    const endOfDay = new Date(day.setHours(23, 59, 59, 999)); // End at 23:59:59
+    return { start: startOfDay.toISOString(), end: endOfDay.toISOString() };
+  };
+
+  /**
+   * Fetch saved foods with optional date filtering
    */
   const fetchSavedFoods = async () => {
     try {
+      let start, end;
+
+      // If a specific date is selected, use that date's range
+      if (selectedDate) {
+        const dateRange = getDateRangeForSpecificDay(selectedDate);
+        start = dateRange.start;
+        end = dateRange.end;
+      } else {
+        // Default to today if no date is selected
+        const today = new Date();
+        start = new Date(today.setHours(0, 0, 0, 0)).toISOString(); // Start of today
+        end = new Date(today.setHours(23, 59, 59, 999)).toISOString(); // End of today
+      }
+
       const response = await axios.get("http://localhost:5000/get-saved-foods", {
+        params: { start, end },
         withCredentials: true,
       });
+
       setSavedFoods(response.data);
     } catch (error) {
       console.error("Error fetching saved foods:", error);
-      alert(error.response.data)
-    }
-  }
-
-  /**
-   * Delete saved from the database
-   * @param {String} foodId Id of food being deleted from the database  
-   */
-  const deleteSavedFood = async (foodId) => {
-    try {
-      const response = await axios.delete(`http://localhost:5000/delete-saved-food/${foodId}`, {
-        withCredentials: true,
-      });
-
-      alert(response.data.message);
-
-      setSavedFoods((prevFoods) => prevFoods.filter((food) => food._id !== foodId));
-    } catch (error) {
-      console.error("Error deleting saved food:", error);
-      alert(error.response.data.message)
+      alert(error.response?.data?.message || "Failed to fetch saved foods");
     }
   };
 
   useEffect(() => {
     fetchSavedFoods();
-  }, []);
-
+  }, [selectedDate]); // Re-fetch whenever selectedDate changes
 
   /**
-   * Search nutrionx api
+   * Search nutrition API
    * @returns None
    */
   const handleSearch = async () => {
@@ -92,7 +99,7 @@ export default function AddFoodsPage() {
         nf_total_fat = 0,
         nf_total_carbohydrate = 0,
       } = food.nutrients?.foods?.[0] || {};
-  
+
       const body = {
         foodName: food.food_name || "Unknown Food",
         calories: nf_calories,
@@ -100,19 +107,20 @@ export default function AddFoodsPage() {
         fat: nf_total_fat,
         carbs: nf_total_carbohydrate,
       };
-  
+
       const response = await axios.post("http://localhost:5000/save-food", body, {
-        withCredentials: true, 
+        withCredentials: true,
         headers: {
           "Content-Type": "application/json",
         },
       });
-  
+
       // Handle success response
       alert(response.data.message);
+      fetchSavedFoods(); // Re-fetch saved foods after adding a new one
     } catch (error) {
       console.error("Error saving food:", error);
-  
+
       if (error.response) {
         alert(error.response.data.message || "Failed to save the food item. Please try again.");
       } else if (error.request) {
@@ -123,9 +131,6 @@ export default function AddFoodsPage() {
       }
     }
   };
-  
-
-
 
   return (
     <Stack spacing={4} direction="column" align="center" mt="20px">
@@ -134,13 +139,13 @@ export default function AddFoodsPage() {
       {/*****************************************End of header*****************************************/}
 
       <Stack gap="8" width="100%" maxW="600px" px="4">
-        <Heading pt="20px">Add Foods</Heading>
+        <Heading pt="20px" textAlign="center">Add Foods</Heading>
 
         {/*****************************************Start of Search Section*****************************************/}
-        <HStack spacing={4}>
+        <HStack spacing={4} width="100%">
           <Input
             placeholder="Food Name"
-            width="300px"
+            width="100%" // Set width to 100% to make it span the available width
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyPress={(e) => {
@@ -154,7 +159,7 @@ export default function AddFoodsPage() {
             icon={<LuSearch />}
             onClick={handleSearch}
             isLoading={loading}
-            colorScheme="teal"
+            size="lg"                  // Adjust the size of the button to match your design
           />
         </HStack>
         {/*****************************************End of Search Section*****************************************/}
@@ -189,12 +194,42 @@ export default function AddFoodsPage() {
         )}
         {/*****************************************End of Results Section*****************************************/}
 
+        {/* Add Food Button */}
         <Link href="/addFoodDetails">
-          <Button colorScheme="teal" variant="outline">
+          <Button
+            color="black"         
+            backgroundColor="white"
+            variant="outline"      
+            borderColor="black"    
+            width="100%"
+            mt="20px"              
+          >
             Add Food
           </Button>
         </Link>
-        <Heading pt="20px">Saved Foods</Heading>
+
+
+        {/*****************************************Start of Saved Foods Section*****************************************/}
+        <Heading pt="20px" textAlign="center">Saved Foods</Heading>
+
+        {/* Filter for saved foods by date */}
+        <HStack spacing={4}>
+          <Input
+            type="date"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+            placeholder="Select Date"
+          />
+          <Button
+            colorScheme="blue"
+            onClick={fetchSavedFoods}
+            mt="10px"
+          >
+            Filter Foods by Date
+          </Button>
+        </HStack>
+
+        {/* Display saved foods */}
         {savedFoods.length > 0 ? (
           <DataListRoot>
             {savedFoods.map((food) => (
@@ -214,10 +249,9 @@ export default function AddFoodsPage() {
             ))}
           </DataListRoot>
         ) : (
-          <Text>No saved foods found.</Text>
+          <Text>No saved foods found for the selected date.</Text>
         )}
-
-
+        {/*****************************************End of Saved Foods Section*****************************************/}
       </Stack>
     </Stack>
   );
