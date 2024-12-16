@@ -6,6 +6,7 @@ const MongoDBSession = require("connect-mongodb-session")(session);
 const cors = require("cors");
 const path = require("path");
 const axios = require("axios");
+const bcrypt = require("bcryptjs")
 require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 
 const User = require("./models/User");
@@ -391,9 +392,6 @@ app.get("/get-saved-foods", isAuth, async (req, res) => {
 });
 
 
-
-
-
 app.delete("/delete-saved-food/:id", isAuth, async (req, res) => {
   try {
     const { id } = req.params;
@@ -459,6 +457,35 @@ app.get("/mood-logs", isAuth, async (req, res) => {
     );
   } catch (error) {
     console.error("Error fetching mood logs:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+// Route to update password
+app.patch("/update-password", isAuth, async (req, res) => {
+  const { password } = req.body;
+
+  if (!password || password.length < 8) {
+    return res.status(400).json({
+      message: "Password must be at least 8 characters long."
+    });
+  }
+
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.findByIdAndUpdate(
+      req.session.userId,
+      { password: hashedPassword },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error("Error updating password:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
