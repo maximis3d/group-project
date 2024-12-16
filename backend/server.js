@@ -120,6 +120,10 @@ app.patch("/update-details", isAuth, async (req, res) => {
   try {
     const updateFields = { username, email, weight, height, age, gender, phoneNumber };
 
+    if (weight){
+      updateFields.weight = weight
+    }
+
     const updatedUser = await User.findOneAndUpdate(
       { username: req.session.username },
       updateFields,
@@ -365,17 +369,18 @@ app.post("/save-food", isAuth, async (req, res) => {
 // Retireve saved food items
 app.get("/get-saved-foods", isAuth, async (req, res) => {
   try {
-    // Get today's date at 00:00:00 (midnight) and 23:59:59 (end of the day)
-    const startOfDay = new Date();
-    startOfDay.setHours(0, 0, 0, 0);  // Set time to 00:00:00
+    const { start, end } = req.query;
 
-    const endOfDay = new Date();
-    endOfDay.setHours(23, 59, 59, 999);  // Set time to 23:59:59
+    const startTime = start ? new Date(start) : null;
+    const endTime = end ? new Date(end) : null;
 
-    // Find saved foods that were logged today using the createdAt field
+    if (!startTime || !endTime || isNaN(startTime) || isNaN(endTime)) {
+      return res.status(400).json({ message: "Invalid start or end time provided." });
+    }
+
     const savedFoods = await SavedFood.find({
       userId: req.session.userId,
-      createdAt: { $gte: startOfDay, $lte: endOfDay }  // Use createdAt for the timestamp
+      createdAt: { $gte: startTime, $lte: endTime }
     }).sort({ createdAt: -1 });  // Sort by the most recent first
 
     res.status(200).json(savedFoods);
@@ -384,6 +389,7 @@ app.get("/get-saved-foods", isAuth, async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
 
 
 

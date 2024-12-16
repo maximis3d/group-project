@@ -4,6 +4,8 @@ const bcrypt = require("bcryptjs");
 const calculateBMR = require("../utils/calculateBMR").default;
 const activityLevel = require("../utils/activityLevel").default;
 
+const WeightLog = require("./weightLog")
+
 const activityMap = {
   "Not Active": 1.15,
   "Lightly Active": 1.35,
@@ -78,31 +80,43 @@ userSchema.pre("save", async function (next) {
 // Pre-update middleware to calculate updated macronutrients based on new TEE
 userSchema.pre("findOneAndUpdate", async function (next) {
   const update = this.getUpdate();
-  const { weight, height, age, gender, activity } = update;
+  const { weight } = update;
 
-  if (weight || height || age || activity) {
-    const currentUser = await this.model.findOne(this.getQuery());
-    const updatedWeight = weight || currentUser.weight;
-    const updatedHeight = height || currentUser.height;
-    const updatedAge = age || currentUser.age;
-    const updatedGender = gender || currentUser.gender;
-    const updatedActivity = activity || currentUser.activity;
+  if (weight) {
+    try {
+      const currentUser = await this.model.findOne(this.getQuery());
 
-    const bmr = calculateBMR(updatedWeight, updatedHeight, updatedAge, updatedGender);
-    const activityLevelNum = activityMap[updatedActivity];
-    const tee = activityLevel(bmr, activityLevelNum);
+      const WeightLog = require("./weightLog"); 
+      await WeightLog.create({
+        userId: currentUser._id,
+        weight,
+      });
 
-    this.set("bmr", bmr); 
-    this.set("tee", tee);
+      const updatedWeight = weight;
+      const updatedHeight = update.height || currentUser.height;
+      const updatedAge = update.age || currentUser.age;
+      const updatedGender = update.gender || currentUser.gender;
+      const updatedActivity = update.activity || currentUser.activity;
 
-    // Recalculate macronutrients based on updated TEE
-    this.set("protein", (tee * 0.2) / 4);
-    this.set("fat", (tee * 0.3) / 9);
-    this.set("carbs", (tee * 0.5) / 4);
+      const bmr = calculateBMR(updatedWeight, updatedHeight, updatedAge, updatedGender);
+      const activityLevelNum = activityMap[updatedActivity];
+      const tee = activityLevel(bmr, activityLevelNum);
+
+      this.set("bmr", bmr);
+      this.set("tee", tee);
+
+      // Recalculate macronutrients based on updated TEE
+      this.set("protein", (tee * 0.2) / 4);
+      this.set("fat", (tee * 0.3) / 9);
+      this.set("carbs", (tee * 0.5) / 4);
+    } catch (error) {
+      return next(error);
+    }
   }
 
   next();
 });
+
 
 // Method to compare password
 userSchema.methods.comparePassword = async function (candidatePassword) {
