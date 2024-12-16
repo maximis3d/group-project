@@ -1,4 +1,5 @@
-export default function activityLevel(BMR, activity) {
+function activityLevel(BMR, activity) {
     return BMR * activity
 }
 
+module.exports = activityLevel

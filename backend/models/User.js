@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
-const calculateBMR = require("../utils/calculateBMR").default;
-const activityLevel = require("../utils/activityLevel").default;
+const calculateBMR = require("../utils/calculateBMR");
+const activityLevel = require("../utils/activityLevel")
 
 const WeightLog = require("./weightLog")
 
