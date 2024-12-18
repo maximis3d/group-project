@@ -1,11 +1,9 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-
 const calculateBMR = require("../utils/calculateBMR");
-const activityLevel = require("../utils/activityLevel")
+const activityLevel = require("../utils/activityLevel");
 
-const WeightLog = require("./weightLog")
-
+// Define the activity map
 const activityMap = {
   "Not Active": 1.15,
   "Lightly Active": 1.35,
@@ -13,6 +11,7 @@ const activityMap = {
   "Very Active": 1.8,
 };
 
+// Define the User schema
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true },
   email: {
@@ -86,7 +85,8 @@ userSchema.pre("findOneAndUpdate", async function (next) {
     try {
       const currentUser = await this.model.findOne(this.getQuery());
 
-      const WeightLog = require("./weightLog"); 
+      // Lazy load WeightLog to avoid circular dependency
+      const WeightLog = require("./weightLog"); // Ensure WeightLog does NOT require User
       await WeightLog.create({
         userId: currentUser._id,
         weight,
@@ -106,6 +106,7 @@ userSchema.pre("findOneAndUpdate", async function (next) {
       this.set("tee", tee);
 
       // Recalculate macronutrients based on updated TEE
+      this.set("calories", tee); // Assuming you want to update calories as well
       this.set("protein", (tee * 0.2) / 4);
       this.set("fat", (tee * 0.3) / 9);
       this.set("carbs", (tee * 0.5) / 4);
@@ -117,12 +118,17 @@ userSchema.pre("findOneAndUpdate", async function (next) {
   next();
 });
 
+// **Ensure `methods` exists before assigning**
+if (!userSchema.methods) {
+  userSchema.methods = {};
+}
 
 // Method to compare password
 userSchema.methods.comparePassword = async function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };
 
+// Create and export the User model
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
