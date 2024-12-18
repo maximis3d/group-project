@@ -1,10 +1,27 @@
-const express = require("express");
-const { authenticate } = require("../middleware/authenticate");
+import { User } from "@/models/user"; // Import User model
 
-const router = express.Router();
+// Server action to handle registration
+export async function registerUser(formData) {
+  const { username, email, password, age, dob, weight, height, gender, calories, activity } = formData;
 
-router.get("/profile", authenticate, (req, res) => {
-  res.json({ message: `Welcome ${req.user.username}` });
-});
+  try {
+    const user = new User({
+      username,
+      email,
+      password,
+      age,
+      dob,
+      weight,
+      height,
+      gender,
+      calories,
+      activity,
+    });
 
-module.exports = router;
+    await user.save();
+    return { message: "Registration successful" };
+  } catch (error) {
+    console.error("Error during registration:", error);
+    throw new Error("Registration failed: " + error.message);
+  }
+}

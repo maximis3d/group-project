@@ -7,16 +7,22 @@
     "mywellbeing"
   ],
   "scripts": {
-    "dev": "concurrently \"npm run dev --workspace backend --silent\" \"npm run dev --workspace mywellbeing --silent\"",
+    "dev": "concurrently \"nodemon backend/server --silent\" \"npm run dev --workspace mywellbeing --silent\"",
     "start": "npm run dev",
     "test": "jest"
   },
   "devDependencies": {
-    "concurrently": "^7.0.0"
+    "concurrently": "^7.0.0",
+    "mongodb-memory-server": "^10.1.2"
   },
   "dependencies": {
-
-    "react-hook-form": "^7.54.0"
-
+    "@chakra-ui/react": "^3.2.2",
+    "connect-mongodb-session": "^5.0.0",
+    "cors": "^2.8.5",
+    "ejs": "^3.1.10",
+    "my-wellbeing": "file:",
+    "nodemon": "^3.1.7",
+    "react-date-picker": "^11.0.0",
+    "react-datepicker": "^7.5.0"
   }
 }

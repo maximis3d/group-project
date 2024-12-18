@@ -1,74 +1,89 @@
-import { Link, Text, Button, HStack, Stack } from "@chakra-ui/react";
-import Image from 'next/image';
-import { Field } from "@/components/ui/field";
-import { Input } from "@chakra-ui/react";
+"use client";
+/**
+ * Module Imports
+ */
+import React from "react";
+import { useState } from "react";
+import { Stack, HStack, Input, Button, Link } from "@chakra-ui/react";
+import Image from "next/image";
 
+
+/**
+ * Script imports
+*/
+import { handleAuthentication } from "../../scripts//authHandler"; 
+
+/**
+ * Handles login page
+ * @returns {String} Formatted Login page
+ */
 export default function LoginPage() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setErrorMessage(null);
+
+    try {
+      const credentials = { username, password };
+      const endpoint = "http://localhost:5000/login";
+      const redirectUrl = "/homePage";
+
+      await handleAuthentication(endpoint, credentials, redirectUrl);
+    } catch (error) {
+      setErrorMessage(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <Stack 
-      spacing={4} 
-      direction="column" 
-      align="center" 
-      mt="20px" 
-    >
-      {/*****************************************Start of header*****************************************/}
-      <HStack spacing={1} className="headerContainer" align="center">
-        <Image
-          src="/logo.png" 
-          alt="MyWellBeing Logo"
-          width={50} 
-          height={50}
-        />
-        <h1 style={{ color: "teal", fontWeight: "bold", fontSize:"24px"}}>MyWellBeing</h1>
+    <Stack spacing={4} align="center" mt="20px">
+      <HStack spacing={1}>
+        <Image src="/logo.png" alt="MyWellBeing Logo" width={50} height={50} />
+        <h1 style={{ color: "teal", fontWeight: "bold", fontSize: "24px" }}>MyWellBeing</h1>
       </HStack>
-      {/*****************************************End of header section*****************************************/}
-  
-      {/*****************************************Start of main body section*****************************************/}
-      <div className="bodyContainer" style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",  // Aligns items to the right
-        justifyContent: "flex-start",
-        width: "300px",
-        height: "100px", 
-        textAlign: "center",      // Ensures text aligns to the right
-        marginTop: "40px"
-      }}>
-        <h1 style={{ fontWeight: "bold", fontSize:"24px" }}>Log in</h1>
 
-        <Field label="Email" mt="20px" color="grey" helperText="We'll never share your email.">
-          <Input placeholder="Enter your email" size="md" />
-        </Field>
+      <form onSubmit={handleLogin} style={{ textAlign: "center", marginTop: "40px" }}>
+        <h1 style={{ fontWeight: "bold", fontSize: "24px" }}>Log in</h1>
 
-        <Field label="Password" color="grey" mt="20px">
-          <Input placeholder="Enter your password" size="md" type="password" />
-        </Field>
-    {/*****************************************End of Main body section*****************************************/}  
+        <Stack spacing={4}>
+          <Input
+            placeholder="Enter your username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <Input
+            placeholder="Enter your password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </Stack>
 
-    {/*****************************************Start of bottom body section*****************************************/}
+        {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
 
-      <div className="bottomContainer" style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",  // Aligns items to the right
-        justifyContent: "flex-start",
-        width: "300px",
-        height: "100px", 
-        textAlign: "center",      // Ensures text aligns to the right
-        marginTop: "40px"
-      }}>
+        <Button
+          size="lg"
+          variant="solid"
+          colorScheme="teal"
+          width="200px"
+          mt="20px"
+          type="submit"
+          isLoading={loading}
+          loadingText="Logging in..."
+        >
+          Log in
+        </Button>
 
-        <Link href="/homePage">  
-        <Button size="lg" variant="solid" colorPalette="teal" width="200px" >Log in</Button>
+        <Link href="/registerPage" mt="10px">
+          <p style={{ fontSize: "12px", textDecoration: "underline" }}>Register for an account</p>
         </Link>
-
-        <Link href="registerPage" mt="10px">
-          <p style={{ fontSize: '12px', textDecoration: 'underline'}}>Register for an account</p>
-        </Link>
-        
-        </div>
-        {/*****************************************End of bottom body section*****************************************/}
-      </div>
+      </form>
     </Stack>
   );
 }

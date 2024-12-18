@@ -1,5 +1,3 @@
-const { activityLevel } = require('./activityLevel');
-
 function calculateBMR(weight, height, age, gender) {
     if (gender === "male") {
         return 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
@@ -8,8 +6,4 @@ function calculateBMR(weight, height, age, gender) {
     }
 }
 
-function calculateTDEE(BMR, active) {
-    return activityLevel(BMR, active);
-}
-
-module.exports = { calculateBMR, calculateTDEE };
+module.exports = calculateBMR;
