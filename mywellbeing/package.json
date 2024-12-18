@@ -6,12 +6,13 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "jest"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.2.3",
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@mui/material": "^6.1.6",
     "@mui/x-charts": "^7.22.1",
     "@shadcn/ui": "^0.0.4",
@@ -19,7 +20,7 @@
     "chart.js": "^4.4.6",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "framer-motion": "^11.11.11",
+    "framer-motion": "^11.15.0",
     "lucide-react": "^0.454.0",
     "mywellbeing": "file:",
     "next": "^15.0.2",
@@ -33,7 +34,14 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "@babel/preset-react": "^7.26.3",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.5.2",
     "@types/jest": "^29.5.14",
+    "babel-jest": "^29.7.0",
     "eslint": "^8",
     "eslint-config-next": "15.0.2",
     "jest": "^29.7.0",

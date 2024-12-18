@@ -2,9 +2,11 @@
 /**
  * Module Imports
  */
+import React from "react";
 import { useState } from "react";
 import { Stack, HStack, Input, Button, Link } from "@chakra-ui/react";
 import Image from "next/image";
+
 
 /**
  * Script imports
