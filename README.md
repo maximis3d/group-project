@@ -1,5 +1,7 @@
 # MyWellBeing Group Project
-
+We have took the route of implementation and created a solution to help solve the challenege of global health by creating a web app
+which allows users to track their nutrient intake, their weight and even has mood tracking features.
+The link to the github is here: https://github.com/maximis3d/group-project
 # Prerequisites
 
 1. NodeJs Installation
@@ -17,4 +19,5 @@
 
 1. If after installation you encounter turbopack issue, please delete each `package-lock.json` file from `./backend`, `/mywellbeing` and `root`
    and then reinstall.
+2. To login, create an account then use those details to sign in 
 
