@@ -128,7 +128,7 @@ export default function RegisterPage() {
 
             const formData = new FormData(e.target);
             const fetchEndpoint = 'http://localhost:5000/register';
-            const redirectUrl = '/loginLoadingPage';
+            const redirectUrl = '/loginPage';
 
             try {
               await handleFormSubmission(formData, fetchEndpoint, redirectUrl);
